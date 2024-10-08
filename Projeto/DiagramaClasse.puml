@@ -1,0 +1,44 @@
+@startuml
+class Usuario {
+    - nome: String
+    - cpf: String
+    + cadastrar()
+    + consultarExtrato()
+}
+
+class Aluno {
+    - email: String
+    - rg: String
+    - endereco: String
+    - instituicao: String
+    - curso: String
+    - saldoMoedas: int
+    + trocarMoedas()
+}
+
+class Professor {
+    - departamento: String
+    - saldoMoedas: int
+    + distribuirMoedas()
+}
+
+class EmpresaParceira {
+    - nome: String
+    - vantagens: List<Vantagem>
+    + cadastrar()
+    + cadastrarVantagem()
+}
+
+class Vantagem {
+    - descricao: String
+    - custoEmMoedas: int
+    - foto: String
+    + cadastrar()
+}
+
+Usuario <|-- Aluno
+Usuario <|-- Professor
+Aluno "1" --> "0..*" Vantagem : troca
+Professor "1" --> "0..*" Aluno : distribui moedas
+EmpresaParceira "1" --> "0..*" Vantagem : oferece
+@enduml
