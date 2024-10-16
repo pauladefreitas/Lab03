@@ -12,15 +12,20 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nome;
+    protected String nome;
 
     @Column(unique = true)
-    private String CPF;
+    protected String CPF;
 
     @Enumerated
     private RoleEnum role;
+
+    @ManyToOne
+    @JoinColumn(name = "instituicoes_id")
+    protected InstituicaoEnsino instituicaoEnsino;
 }

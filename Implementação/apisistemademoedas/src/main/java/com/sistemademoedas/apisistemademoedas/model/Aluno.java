@@ -11,22 +11,20 @@ import org.springframework.beans.BeanUtils;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@DiscriminatorValue("ALUNO")
 public class Aluno extends User {
 
     @Column(unique = true)
     private String email;
     private String RG;
     private String endereco;
-    private int saldoMoedas;
-
-    @ManyToOne
-    @JoinColumn(name = "instituicoes_id")
-    private InstituicaoEnsino instituicaoEnsino;
+    private Integer saldoMoedas;
 
     private String curso;
 
-    public static Aluno fromRequest(AlunoRequestDTO alunoRequestDTO) {
+    public static Aluno fromRequest(AlunoRequestDTO alunoRequestDTO, InstituicaoEnsino instituicaoEnsino) {
         Aluno aluno = new Aluno();
+        aluno.setInstituicaoEnsino(instituicaoEnsino);
         BeanUtils.copyProperties(alunoRequestDTO, aluno);
         return aluno;
     }
@@ -35,8 +33,8 @@ public class Aluno extends User {
         this.curso = alunoRequestDTO.curso() != null ? alunoRequestDTO.curso() : this.curso;
         this.RG = alunoRequestDTO.RG() != null ? alunoRequestDTO.RG() : this.RG;
         this.email = alunoRequestDTO.email() != null ? alunoRequestDTO.email() : this.email;
-        this.saldoMoedas = alunoRequestDTO.saldoMoedas() != 0 ? alunoRequestDTO.saldoMoedas() : this.saldoMoedas;
-        this.instituicaoEnsino = alunoRequestDTO.instituicaoEnsino() != null ? alunoRequestDTO.instituicaoEnsino() : this.instituicaoEnsino;
+        this.saldoMoedas = alunoRequestDTO.saldoMoedas() != null ? alunoRequestDTO.saldoMoedas() : this.saldoMoedas;
+        if (alunoRequestDTO.instituicaoEnsino() != null) this.instituicaoEnsino.update(alunoRequestDTO.instituicaoEnsino());
         this.endereco = alunoRequestDTO.endereco() != null ? alunoRequestDTO.endereco() : this.endereco;
     }
 }

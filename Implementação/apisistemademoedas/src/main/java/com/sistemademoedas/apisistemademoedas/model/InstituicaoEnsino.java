@@ -1,9 +1,15 @@
 package com.sistemademoedas.apisistemademoedas.model;
 
+import com.sistemademoedas.apisistemademoedas.exception.ProfessorNotFoundException;
+import com.sistemademoedas.apisistemademoedas.model.dto.request.InstituicaoEnsinoRequestDTO;
+import com.sistemademoedas.apisistemademoedas.model.dto.request.ProfessorRequestDTO;
+import com.sistemademoedas.apisistemademoedas.model.dto.response.InstituicaoEnsinoResponseDTO;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.BeanUtils;
 
 import java.util.List;
 
@@ -20,4 +26,34 @@ public class InstituicaoEnsino {
 
     @OneToMany(mappedBy = "instituicaoEnsino")
     private List<Professor> professores;
+
+    public static InstituicaoEnsino fromRequest(InstituicaoEnsinoRequestDTO instituicaoEnsinoRequestDTO) {
+        InstituicaoEnsino instituicaoEnsino = new InstituicaoEnsino();
+        BeanUtils.copyProperties(instituicaoEnsinoRequestDTO, instituicaoEnsino);
+        return instituicaoEnsino;
+    }
+
+    public void update(InstituicaoEnsinoRequestDTO instituicaoEnsinoRequestDTO) {
+        this.nome = instituicaoEnsinoRequestDTO.nome() != null ? instituicaoEnsinoRequestDTO.nome() : this.nome;
+
+        if (instituicaoEnsinoRequestDTO.professores() != null) {
+            for (ProfessorRequestDTO professorRequestDTO : instituicaoEnsinoRequestDTO.professores()) {
+                if (professorRequestDTO != null) {
+                    Professor existingProfessor = this.professores.stream()
+                            .filter(p -> p.getNome().equals(professorRequestDTO.nome()))
+                            .findFirst()
+                            .orElse(null);
+
+                    if (existingProfessor != null) {
+                        existingProfessor.update(professorRequestDTO);
+                    } else {
+                        throw new ProfessorNotFoundException("Professor com o nome " + professorRequestDTO.nome() + " não foi encontrado.");
+                    }
+                } else {
+                    throw new ProfessorNotFoundException("ProfessorRequestDTO is null.");
+                }
+            }
+        }
+    }
+
 }
