@@ -10,7 +10,7 @@ class Aluno {
     - email: String
     - rg: String
     - endereco: String
-    - instituicao: String
+    - instituicao: InstituicaoEnsino
     - curso: String
     - saldoMoedas: int
     + trocarMoedas()
@@ -19,6 +19,7 @@ class Aluno {
 class Professor {
     - departamento: String
     - saldoMoedas: int
+    - instituicao: InstituicaoEnsino
     + distribuirMoedas()
 }
 
@@ -36,9 +37,28 @@ class Vantagem {
     + cadastrar()
 }
 
+class InstituicaoEnsino {
+    - nome: String
+    - professores: List<Professor>
+    + adicionarAluno()
+    + adicionarProfessor()
+}
+
+class GerenciadorDeVantagens {
+    + resgatarVantagem(aluno: Aluno, vantagem: Vantagem)
+}
+
+class GerenciadorDeMoedas {
+    + distribuirMoedas(professor: Professor, aluno: Aluno, quantidade: int)
+}
+
 Usuario <|-- Aluno
 Usuario <|-- Professor
-Aluno "1" --> "0..*" Vantagem : troca
-Professor "1" --> "0..*" Aluno : distribui moedas
-EmpresaParceira "1" --> "0..*" Vantagem : oferece
+Professor --> InstituicaoEnsino
+Aluno --> InstituicaoEnsino
+EmpresaParceira "1" -up-> "0..*" Vantagem : oferece
+GerenciadorDeVantagens "1" --> "0..*" Vantagem : gerencia
+GerenciadorDeMoedas "1" -up-> "0..*" Professor : distribui moedas
+GerenciadorDeMoedas "1" --> "0..*" Aluno : distribui para
+GerenciadorDeVantagens "1" --> "0..*" Aluno : resgata
 @enduml
