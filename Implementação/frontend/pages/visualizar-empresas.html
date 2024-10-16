@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar Empresas Parceiras</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="cadastro-aluno.html">Aluno</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cadastro-empresa.html">Empresa Parceira</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="visualizar-alunos.html">Visualizar Alunos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="visualizar-empresas.html">Visualizar Empresas</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<div class="container mt-5">
+    <h1 class="text-center">Lista de Empresas Parceiras</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome da Empresa</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody id="empresaTableBody">
+            <!-- Os dados das empresas serão inseridos aqui via JavaScript -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+    // Mock de Dados de Empresas
+    const mockEmpresas = [
+        { id: 1, nome: "Tech Innovations" },
+        { id: 2, nome: "Saúde Integrada" },
+        { id: 3, nome: "Educação e Carreira" },
+        { id: 4, nome: "Consultoria Empresarial" },
+        { id: 5, nome: "Soluções Sustentáveis" },
+    ];
+
+    $(document).ready(function() {
+        // Simulação de resposta da API
+        const data = mockEmpresas;
+
+        data.forEach(function(empresa) {
+            $('#empresaTableBody').append(`
+                <tr>
+                    <td>${empresa.id}</td>
+                    <td>${empresa.nome}</td>
+                    <td>
+                        <button class="btn btn-custom onclick="editarEmpresa(${empresa.id})">Editar</button>
+                        <button class="btn btn-deletar" onclick="deletarEmpresa(${empresa.id})">Deletar</button>
+                    </td>
+                </tr>
+            `);
+        });
+    });
+
+    function editarEmpresa(id) {
+        // Lógica para editar empresa (pode redirecionar para uma página de edição)
+        alert(`Editar empresa com ID: ${id}`);
+    }
+
+    function deletarEmpresa(id) {
+        // Lógica para deletar empresa
+        if (confirm('Tem certeza que deseja deletar esta empresa?')) {
+            alert('Empresa deletada com sucesso!');
+            location.reload(); // Simula recarregar a página para atualizar a lista
+        }
+    }
+</script>
+
+</body>
+</html>

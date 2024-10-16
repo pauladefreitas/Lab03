@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar Alunos</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="cadastro-aluno.html">Aluno</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cadastro-empresa.html">Empresa Parceira</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="visualizar-alunos.html">Visualizar Alunos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="visualizar-empresas.html">Visualizar Empresas</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<div class="container mt-5">
+    <h1 class="text-center">Lista de Alunos</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Curso</th>
+                <th>Instituição de Ensino ID</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody id="alunoTableBody">
+            <!-- Os dados dos alunos serão inseridos aqui via JavaScript -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+    // Mock de Dados de Alunos
+    const mockAlunos = [
+        { id: 1, nome: "Alice Silva", email: "alice@example.com", curso: "Engenharia", instituicaoEnsino: { id: 1 } },
+        { id: 2, nome: "Bruno Costa", email: "bruno@example.com", curso: "Medicina", instituicaoEnsino: { id: 1 } },
+        { id: 3, nome: "Carla Mendes", email: "carla@example.com", curso: "Direito", instituicaoEnsino: { id: 1 } },
+        { id: 4, nome: "Daniel Pereira", email: "daniel@example.com", curso: "Arquitetura", instituicaoEnsino: { id: 1 } },
+        { id: 5, nome: "Evelyn Santos", email: "evelyn@example.com", curso: "Psicologia", instituicaoEnsino: { id: 1 } },
+    ];
+
+    $(document).ready(function() {
+        // Simulação de resposta da API
+        const data = mockAlunos;
+        
+        data.forEach(function(aluno) {
+            $('#alunoTableBody').append(`
+                <tr>
+                    <td>${aluno.id}</td>
+                    <td>${aluno.nome}</td>
+                    <td>${aluno.email}</td>
+                    <td>${aluno.curso}</td>
+                    <td>${aluno.instituicaoEnsino.id}</td>
+                    <td>
+                        <button class="btn btn-custom onclick="editarAluno(${aluno.id})">Editar</button>
+                        <button class="btn btn-deletar" onclick="deletarAluno(${aluno.id})">Deletar</button>
+                    </td>
+                </tr>
+            `);
+        });
+    });
+
+    function editarAluno(id) {
+        // Lógica para editar aluno (pode redirecionar para uma página de edição)
+        alert(`Editar aluno com ID: ${id}`);
+    }
+
+    function deletarAluno(id) {
+        // Lógica para deletar aluno
+        if (confirm('Tem certeza que deseja deletar este aluno?')) {
+            alert('Aluno deletado com sucesso!');
+            location.reload(); // Simula recarregar a página para atualizar a lista
+        }
+    }
+</script>
+
+</body>
+</html>
