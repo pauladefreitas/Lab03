@@ -1,6 +1,8 @@
 package com.sistemademoedas.apisistemademoedas.controller;
 
 import com.sistemademoedas.apisistemademoedas.model.Vantagem;
+import com.sistemademoedas.apisistemademoedas.model.dto.request.VantagemRequestDTO;
+import com.sistemademoedas.apisistemademoedas.model.dto.response.VantagemResponseDTO;
 import com.sistemademoedas.apisistemademoedas.service.VantagemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,10 +32,8 @@ public class VantagemController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody Vantagem obj) {
-        obj.setId(id);
-        this.vantagemService.update(obj);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<VantagemResponseDTO> update(@PathVariable Long id, @RequestBody VantagemRequestDTO vantagemRequestDTO) {
+        return ResponseEntity.ok(vantagemService.update(id, vantagemRequestDTO));
     }
 
     @DeleteMapping("/{id}")

@@ -1,6 +1,8 @@
 package com.sistemademoedas.apisistemademoedas.controller;
 
 import com.sistemademoedas.apisistemademoedas.model.EmpresaParceira;
+import com.sistemademoedas.apisistemademoedas.model.dto.request.EmpresaParceiraRequestDTO;
+import com.sistemademoedas.apisistemademoedas.model.dto.response.EmpresaParceiraResponseDTO;
 import com.sistemademoedas.apisistemademoedas.service.EmpresaParceiraService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,10 +32,8 @@ public class EmpresaParceiraController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody EmpresaParceira obj) {
-        obj.setId(id);
-        this.empresaParceiraService.update(obj);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<EmpresaParceiraResponseDTO> update(@PathVariable Long id, @RequestBody EmpresaParceiraRequestDTO empresaParceiraRequestDTO) {
+        return ResponseEntity.ok(empresaParceiraService.update(id, empresaParceiraRequestDTO));
     }
 
     @DeleteMapping("/{id}")

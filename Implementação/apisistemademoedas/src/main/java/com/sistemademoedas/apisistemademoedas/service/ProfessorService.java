@@ -1,6 +1,9 @@
 package com.sistemademoedas.apisistemademoedas.service;
 
+import com.sistemademoedas.apisistemademoedas.exception.ProfessorNotFoundException;
 import com.sistemademoedas.apisistemademoedas.model.Professor;
+import com.sistemademoedas.apisistemademoedas.model.dto.request.ProfessorRequestDTO;
+import com.sistemademoedas.apisistemademoedas.model.dto.response.ProfessorResponseDTO;
 import com.sistemademoedas.apisistemademoedas.repository.ProfessorRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +29,12 @@ public class ProfessorService {
         return professor;
     }
 
-    @Transactional
-    public Professor update(Professor professor){
-        Professor newProfessor = professorRepository.findById(professor.getId()).get();
-        return this.professorRepository.save(newProfessor);
+    public ProfessorResponseDTO update(Long id, ProfessorRequestDTO professorRequestDTO) {
+        var professor = professorRepository.findById(id)
+                .orElseThrow(() -> new ProfessorNotFoundException("Professor não encontrado. Id " + id));
+        professor.update(professorRequestDTO);
+        professorRepository.save(professor);
+        return ProfessorResponseDTO.fromEntity(professor);
     }
 
     public void delete(Long id){

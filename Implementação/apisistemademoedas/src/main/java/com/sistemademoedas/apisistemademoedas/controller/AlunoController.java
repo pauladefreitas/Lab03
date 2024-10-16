@@ -1,6 +1,8 @@
 package com.sistemademoedas.apisistemademoedas.controller;
 
 import com.sistemademoedas.apisistemademoedas.model.Aluno;
+import com.sistemademoedas.apisistemademoedas.model.dto.request.AlunoRequestDTO;
+import com.sistemademoedas.apisistemademoedas.model.dto.response.AlunoResponseDTO;
 import com.sistemademoedas.apisistemademoedas.service.AlunoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,10 +32,8 @@ public class AlunoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody Aluno obj) {
-        obj.setId(id);
-        this.alunoService.update(obj);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<AlunoResponseDTO> update(@PathVariable Long id, @RequestBody AlunoRequestDTO obj) {
+        return ResponseEntity.ok(alunoService.update(id, obj));
     }
 
     @DeleteMapping("/{id}")

@@ -1,6 +1,9 @@
 package com.sistemademoedas.apisistemademoedas.service;
 
+import com.sistemademoedas.apisistemademoedas.exception.InstituicaoEnsinoNotFoundException;
 import com.sistemademoedas.apisistemademoedas.model.InstituicaoEnsino;
+import com.sistemademoedas.apisistemademoedas.model.dto.request.InstituicaoEnsinoRequestDTO;
+import com.sistemademoedas.apisistemademoedas.model.dto.response.InstituicaoEnsinoResponseDTO;
 import com.sistemademoedas.apisistemademoedas.repository.InstituicaoEnsinoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +19,7 @@ public class InstituicaoEnsinoService {
 
     public InstituicaoEnsino findByID(Long id){
         Optional<InstituicaoEnsino> instituicaoEnsino = instituicaoEnsinoRepository.findById(id);
-        return instituicaoEnsino.orElseThrow(() -> new RuntimeException("Instituição de ensino não encontrado. Id" + id));
+        return instituicaoEnsino.orElseThrow(() -> new RuntimeException("Instituição de ensino não encontrada. Id" + id));
     }
 
     @Transactional
@@ -26,10 +29,12 @@ public class InstituicaoEnsinoService {
         return instituicaoEnsino;
     }
 
-    @Transactional
-    public InstituicaoEnsino update(InstituicaoEnsino instituicaoEnsino){
-        InstituicaoEnsino newInstituicaoEnsino = instituicaoEnsinoRepository.findById(instituicaoEnsino.getId()).get();
-        return this.instituicaoEnsinoRepository.save(newInstituicaoEnsino);
+    public InstituicaoEnsinoResponseDTO update(Long id, InstituicaoEnsinoRequestDTO instituicaoEnsinoRequestDTO) {
+        var instituicaoEnsino = instituicaoEnsinoRepository.findById(id)
+                .orElseThrow(() -> new InstituicaoEnsinoNotFoundException("Instituição de ensino não encontrada. Id " + id));
+        instituicaoEnsino.update(instituicaoEnsinoRequestDTO);
+        instituicaoEnsinoRepository.save(instituicaoEnsino);
+        return InstituicaoEnsinoResponseDTO.fromEntity(instituicaoEnsino);
     }
 
     public void delete(Long id){

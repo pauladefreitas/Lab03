@@ -1,6 +1,9 @@
 package com.sistemademoedas.apisistemademoedas.service;
 
+import com.sistemademoedas.apisistemademoedas.exception.EmpresaParceiraNotFoundException;
 import com.sistemademoedas.apisistemademoedas.model.EmpresaParceira;
+import com.sistemademoedas.apisistemademoedas.model.dto.request.EmpresaParceiraRequestDTO;
+import com.sistemademoedas.apisistemademoedas.model.dto.response.EmpresaParceiraResponseDTO;
 import com.sistemademoedas.apisistemademoedas.repository.EmpresaParceiraRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +19,7 @@ public class EmpresaParceiraService {
 
     public EmpresaParceira findByID(Long id){
         Optional<EmpresaParceira> empresaParceira = empresaParceiraRepository.findById(id);
-        return empresaParceira.orElseThrow(() -> new RuntimeException("Empresa parceira não encontrado. Id" + id));
+        return empresaParceira.orElseThrow(() -> new RuntimeException("Empresa parceira não encontrada. Id" + id));
     }
 
     @Transactional
@@ -26,10 +29,12 @@ public class EmpresaParceiraService {
         return empresaParceira;
     }
 
-    @Transactional
-    public EmpresaParceira update(EmpresaParceira empresaParceira){
-        EmpresaParceira newempresaParceira = empresaParceiraRepository.findById(empresaParceira.getId()).get();
-        return this.empresaParceiraRepository.save(newempresaParceira);
+    public EmpresaParceiraResponseDTO update(Long id, EmpresaParceiraRequestDTO empresaParceiraRequestDTO) {
+        var empresaParceira = empresaParceiraRepository.findById(id)
+                .orElseThrow(() -> new EmpresaParceiraNotFoundException("Empresa parceira não encontrada. Id " + id));
+        empresaParceira.update(empresaParceiraRequestDTO);
+        empresaParceiraRepository.save(empresaParceira);
+        return EmpresaParceiraResponseDTO.fromEntity(empresaParceira);
     }
 
     public void delete(Long id){

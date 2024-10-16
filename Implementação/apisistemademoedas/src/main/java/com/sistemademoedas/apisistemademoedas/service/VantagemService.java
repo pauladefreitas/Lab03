@@ -1,6 +1,9 @@
 package com.sistemademoedas.apisistemademoedas.service;
 
+import com.sistemademoedas.apisistemademoedas.exception.VantagemNotFoundException;
 import com.sistemademoedas.apisistemademoedas.model.Vantagem;
+import com.sistemademoedas.apisistemademoedas.model.dto.request.VantagemRequestDTO;
+import com.sistemademoedas.apisistemademoedas.model.dto.response.VantagemResponseDTO;
 import com.sistemademoedas.apisistemademoedas.repository.VantagemRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +19,7 @@ public class VantagemService {
 
     public Vantagem findByID(Long id){
         Optional<Vantagem> vantagem = vantagemRepository.findById(id);
-        return vantagem.orElseThrow(() -> new RuntimeException("Vantagem não encontrado. Id" + id));
+        return vantagem.orElseThrow(() -> new RuntimeException("Vantagem não encontrada. Id" + id));
     }
 
     @Transactional
@@ -26,10 +29,12 @@ public class VantagemService {
         return vantagem;
     }
 
-    @Transactional
-    public Vantagem update(Vantagem vantagem){
-        Vantagem newVantagem = vantagemRepository.findById(vantagem.getId()).get();
-        return this.vantagemRepository.save(newVantagem);
+    public VantagemResponseDTO update(Long id, VantagemRequestDTO vantagemRequestDTO) {
+        var vantagem = vantagemRepository.findById(id)
+                .orElseThrow(() -> new VantagemNotFoundException("Vantagem não encontrada. Id " + id));
+        vantagem.update(vantagemRequestDTO);
+        vantagemRepository.save(vantagem);
+        return VantagemResponseDTO.fromEntity(vantagem);
     }
 
     public void delete(Long id){

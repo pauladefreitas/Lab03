@@ -1,6 +1,9 @@
 package com.sistemademoedas.apisistemademoedas.service;
 
+import com.sistemademoedas.apisistemademoedas.exception.AlunoNotFoundException;
 import com.sistemademoedas.apisistemademoedas.model.Aluno;
+import com.sistemademoedas.apisistemademoedas.model.dto.request.AlunoRequestDTO;
+import com.sistemademoedas.apisistemademoedas.model.dto.response.AlunoResponseDTO;
 import com.sistemademoedas.apisistemademoedas.repository.AlunoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +29,12 @@ public class AlunoService {
         return aluno;
     }
 
-    @Transactional
-    public Aluno update(Aluno aluno){
-        Aluno newAluno = alunoRepository.findById(aluno.getId()).get();
-        return this.alunoRepository.save(newAluno);
+    public AlunoResponseDTO update(Long id, AlunoRequestDTO alunoRequestDTO) {
+        var aluno = alunoRepository.findById(id)
+                .orElseThrow(() -> new AlunoNotFoundException("Aluno não encontrado. Id " + id));
+        aluno.update(alunoRequestDTO);
+        alunoRepository.save(aluno);
+        return AlunoResponseDTO.fromEntity(aluno);
     }
 
     public void delete(Long id){
