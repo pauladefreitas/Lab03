@@ -1,11 +1,15 @@
 @startuml
 package "Sistema de Mérito" {
-    [Banco de Dados] 
-    [Serviço de Autenticação]
-    [Serviço de Notificação]
+    
+    package "Back-End" {
+        [Banco de Dados] 
+        [Serviço de Autenticação]
+        [Serviço de Notificação]
+        [Serviço de Moedas]
+        [Serviço de Vantagens]
+    }
+
     [Interface do Usuário]
-    [Serviço de Moedas]
-    [Serviço de Vantagens]
 
     [Interface do Usuário] --> [Serviço de Autenticação] : login/logout
     [Interface do Usuário] --> [Serviço de Notificação] : enviar notificação
