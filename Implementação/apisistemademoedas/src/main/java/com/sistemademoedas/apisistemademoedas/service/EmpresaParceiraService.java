@@ -4,11 +4,13 @@ import com.sistemademoedas.apisistemademoedas.exception.EmpresaParceiraNotFoundE
 import com.sistemademoedas.apisistemademoedas.model.EmpresaParceira;
 import com.sistemademoedas.apisistemademoedas.model.dto.request.EmpresaParceiraRequestDTO;
 import com.sistemademoedas.apisistemademoedas.model.dto.response.EmpresaParceiraResponseDTO;
+import com.sistemademoedas.apisistemademoedas.model.dto.response.EmpresaParceiraResponseDTO;
 import com.sistemademoedas.apisistemademoedas.repository.EmpresaParceiraRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,6 +29,13 @@ public class EmpresaParceiraService {
         empresaParceira.setId(null);
         empresaParceira = this.empresaParceiraRepository.save(empresaParceira);
         return empresaParceira;
+    }
+
+    public List<EmpresaParceiraResponseDTO> getAll() {
+        return empresaParceiraRepository.findAll()
+                .stream()
+                .map(EmpresaParceiraResponseDTO::fromEntity)
+                .toList();
     }
 
     public EmpresaParceiraResponseDTO update(Long id, EmpresaParceiraRequestDTO empresaParceiraRequestDTO) {

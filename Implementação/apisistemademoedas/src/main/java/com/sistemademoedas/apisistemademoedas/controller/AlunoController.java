@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/alunos")
@@ -22,6 +23,11 @@ public class AlunoController {
     public ResponseEntity<Aluno> findById(@PathVariable Long id) {
         Aluno obj = this.alunoService.findByID(id);
         return ResponseEntity.ok().body(obj);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<AlunoResponseDTO>> getAll() {
+        return ResponseEntity.ok(alunoService.getAll());
     }
 
     @PostMapping

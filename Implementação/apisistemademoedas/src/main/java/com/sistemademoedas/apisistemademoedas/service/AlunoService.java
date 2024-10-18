@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,6 +28,13 @@ public class AlunoService {
         aluno.setId(null);
         aluno = this.alunoRepository.save(aluno);
         return aluno;
+    }
+
+    public List<AlunoResponseDTO> getAll() {
+        return alunoRepository.findAll()
+                .stream()
+                .map(AlunoResponseDTO::fromEntity)
+                .toList();
     }
 
     public AlunoResponseDTO update(Long id, AlunoRequestDTO alunoRequestDTO) {
