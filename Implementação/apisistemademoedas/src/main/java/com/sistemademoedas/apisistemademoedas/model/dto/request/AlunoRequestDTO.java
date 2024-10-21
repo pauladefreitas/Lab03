@@ -6,9 +6,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record AlunoRequestDTO(@NotBlank @Email String email,
+                              @NotBlank String nome,
+                              @NotNull String CPF,
                               @NotBlank String RG,
                               @NotBlank String endereco,
-                              @NotNull InstituicaoEnsino instituicaoEnsino,
+                              @NotNull InstituicaoEnsinoRequestDTO instituicaoEnsino,
                               @NotBlank String curso,
-                              @NotNull int saldoMoedas) {
+                              @NotNull Integer saldoMoedas) {
 }
