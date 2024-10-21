@@ -1,16 +1,14 @@
 package com.sistemademoedas.apisistemademoedas.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.sistemademoedas.apisistemademoedas.model.dto.request.UserRequestDTO;
 import com.sistemademoedas.apisistemademoedas.model.enums.RoleEnum;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @Entity
 @Table(name = "tb_users")
-@AllArgsConstructor
-@NoArgsConstructor
 @DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User {
@@ -27,5 +25,11 @@ public class User {
 
     @ManyToOne
     @JoinColumn(name = "instituicoes_id")
+    @JsonBackReference
     protected InstituicaoEnsino instituicaoEnsino;
+
+    public void update(UserRequestDTO userRequestDTO) {
+        this.CPF = userRequestDTO.CPF() != null ? userRequestDTO.CPF() : this.CPF;
+        this.nome = userRequestDTO.nome() != null ? userRequestDTO.nome() : this.nome;
+    }
 }

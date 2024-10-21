@@ -1,5 +1,6 @@
 package com.sistemademoedas.apisistemademoedas.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sistemademoedas.apisistemademoedas.exception.ProfessorNotFoundException;
 import com.sistemademoedas.apisistemademoedas.model.dto.request.InstituicaoEnsinoRequestDTO;
 import com.sistemademoedas.apisistemademoedas.model.dto.request.ProfessorRequestDTO;
@@ -25,6 +26,7 @@ public class InstituicaoEnsino {
     private String nome;
 
     @OneToMany(mappedBy = "instituicaoEnsino")
+    @JsonManagedReference
     private List<Professor> professores;
 
     public static InstituicaoEnsino fromRequest(InstituicaoEnsinoRequestDTO instituicaoEnsinoRequestDTO) {
