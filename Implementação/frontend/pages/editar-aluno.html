@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Aluno</title>
+    <title>Editar Aluno</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <link rel="stylesheet" href="../styles.css">
@@ -22,13 +22,13 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link active" href="cadastro-aluno.html">Aluno</a>
+                            <a class="nav-link" href="cadastro-aluno.html">Aluno</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="cadastro-empresa.html">Empresa Parceira</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="visualizar-alunos.html">Visualizar Alunos</a>
+                            <a class="nav-link active" href="visualizar-alunos.html">Visualizar Alunos</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="visualizar-empresas.html">Visualizar Empresas</a>
@@ -40,8 +40,9 @@
     </header>
 
     <div class="container mt-5">
-        <h1 class="text-center">Cadastro de Aluno</h1>
-        <form id="alunoForm">
+        <h1 class="text-center">Editar Aluno</h1>
+        <form id="editarAlunoForm">
+            <input type="hidden" id="alunoId">
             <div class="form-group">
                 <label for="nome">Nome</label>
                 <input type="text" class="form-control" id="nome" required>
@@ -74,41 +75,71 @@
                 <label for="instituicaoEnsino">Instituição de Ensino ID</label>
                 <input type="number" class="form-control" id="instituicaoEnsino" value="1" required>
             </div>
-            <button type="submit" class="btn btn-custom">Cadastrar Aluno</button>
+            <button type="submit" class="btn btn-primary">Salvar Alterações</button>
         </form>
     </div>
 
     <script>
         $(document).ready(function () {
-            $('#alunoForm').on('submit', function (e) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const alunoId = urlParams.get('id');
+
+            function buscarDadosAluno(id) {
+                $.ajax({
+                    url: `http://localhost:8080/alunos/${id}`,
+                    method: 'GET',
+                    success: function (response) {
+                        preencherFormulario(response);
+                    },
+                    error: function (error) {
+                        console.error('Erro ao buscar dados do aluno:', error);
+                        alert('Erro ao carregar dados do aluno.');
+                    }
+                });
+            }
+
+            function preencherFormulario(aluno) {
+                $('#alunoId').val(aluno.id);
+                $('#nome').val(aluno.nome);
+                $('#email').val(aluno.email);
+                $('#endereco').val(aluno.endereco);
+                $('#saldoMoedas').val(aluno.saldoMoedas);
+                $('#curso').val(aluno.curso);
+                $('#rg').val(aluno.rg);
+                $('#cpf').val(aluno.cpf);
+                $('#instituicaoEnsino').val(aluno.instituicaoEnsino.id);
+            }
+
+            buscarDadosAluno(alunoId);
+
+            $('#editarAlunoForm').on('submit', function (e) {
                 e.preventDefault();
 
                 const alunoData = {
+                    id: $('#alunoId').val(),
                     nome: $('#nome').val(),
-                    role: "ALUNO",
-                    instituicaoEnsino: {
-                        id: parseInt($('#instituicaoEnsino').val())
-                    },
                     email: $('#email').val(),
                     endereco: $('#endereco').val(),
                     saldoMoedas: parseFloat($('#saldoMoedas').val()),
                     curso: $('#curso').val(),
                     rg: $('#rg').val(),
-                    cpf: $('#cpf').val()
+                    cpf: $('#cpf').val(),
+                    instituicaoEnsino: {
+                        id: parseInt($('#instituicaoEnsino').val())
+                    }
                 };
 
                 $.ajax({
-                    url: 'http://localhost:8080/alunos',
-                    method: 'POST',
+                    url: `http://localhost:8080/alunos/${alunoId}`,
+                    method: 'PUT',
                     contentType: 'application/json',
                     data: JSON.stringify(alunoData),
                     success: function (response) {
-                        alert('Aluno cadastrado com sucesso!');
-                        $('#alunoForm')[0].reset();
+                        alert('Alterações salvas com sucesso!');
                         window.location.href = 'visualizar-alunos.html';
                     },
                     error: function (xhr) {
-                        alert('Erro ao cadastrar aluno: ' + xhr.responseText);
+                        alert('Erro ao salvar alterações: ' + xhr.responseText);
                     }
                 });
             });
