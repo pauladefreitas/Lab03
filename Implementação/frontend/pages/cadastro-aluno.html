@@ -96,9 +96,10 @@
                     rg: $('#rg').val(),
                     cpf: $('#cpf').val()
                 };
+                console.log("🚀 ~ alunoData:", alunoData)
 
                 $.ajax({
-                    url: 'http://localhost:8080/alunos',
+                    url: 'http://localhost:8080/aluno',
                     method: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify(alunoData),

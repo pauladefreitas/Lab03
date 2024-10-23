@@ -63,7 +63,7 @@
 
     <script>
         $(document).ready(function () {
-            fetch('http://localhost:8080/alunos')
+            fetch('http://localhost:8080/aluno')
                 .then(response => response.json())
                 .then(data => {
                     data.forEach(function (aluno) {
@@ -76,7 +76,7 @@
                             <td>${aluno.saldoMoedas}</td>
                             <td>${aluno.curso}</td>
                             <td>${aluno.RG}</td>
-                            <td>${aluno.CPF}</td>
+                            <td>${aluno.cph}</td>
                             <td>${aluno.instituicaoEnsino.id}</td>
                             <td>
                                 <button class="btn btn-custom aluno" onclick="window.location.href='editar-aluno.html?id=${aluno.id}'">Editar</button>
@@ -93,7 +93,7 @@
 
         function deletarAluno(id) {
             if (confirm('Tem certeza que deseja deletar este aluno?')) {
-                fetch(`http://localhost:8080/alunos/${id}`, {
+                fetch(`http://localhost:8080/aluno/${id}`, {
                     method: 'DELETE',
                 })
                     .then(response => {

@@ -86,7 +86,7 @@
 
             function buscarDadosAluno(id) {
                 $.ajax({
-                    url: `http://localhost:8080/alunos/${id}`,
+                    url: `http://localhost:8080/aluno/${id}`,
                     method: 'GET',
                     success: function (response) {
                         preencherFormulario(response);
@@ -106,7 +106,7 @@
                 $('#saldoMoedas').val(aluno.saldoMoedas);
                 $('#curso').val(aluno.curso);
                 $('#rg').val(aluno.rg);
-                $('#cpf').val(aluno.cpf);
+                $('#cpf').val(aluno.CPF);
                 $('#instituicaoEnsino').val(aluno.instituicaoEnsino.id);
             }
 
@@ -130,7 +130,7 @@
                 };
 
                 $.ajax({
-                    url: `http://localhost:8080/alunos/${alunoId}`,
+                    url: `http://localhost:8080/aluno/${alunoId}`,
                     method: 'PUT',
                     contentType: 'application/json',
                     data: JSON.stringify(alunoData),
