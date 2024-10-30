@@ -8,12 +8,14 @@ import lombok.Builder;
 public record VantagemResponseDTO(Long id,
                                   String nome,
                                   String descricao,
+                                  Integer valor,
                                   EmpresaParceira empresaParceira) {
     public static VantagemResponseDTO fromEntity(Vantagem vantagem) {
         return VantagemResponseDTO.builder()
                 .id(vantagem.getId())
                 .nome(vantagem.getNome())
                 .descricao(vantagem.getDescricao())
+                .valor(vantagem.getValor())
                 .empresaParceira(vantagem.getEmpresaParceira())
                 .build();
     }
