@@ -19,6 +19,7 @@ public class Vantagem {
 
     private String nome;
     private String descricao;
+    private int valor;
 
     @ManyToOne
     @JoinColumn(name = "empresa_parceira_id")
@@ -34,5 +35,6 @@ public class Vantagem {
     public void update(VantagemRequestDTO vantagemRequestDTO) {
         this.nome = vantagemRequestDTO.nome() != null ? vantagemRequestDTO.nome() : this.nome;
         this.descricao = vantagemRequestDTO.descricao() != null ? vantagemRequestDTO.descricao() : this.descricao;
+        this.valor = vantagemRequestDTO.valor() != null ? vantagemRequestDTO.valor() : this.valor;
     }
 }
