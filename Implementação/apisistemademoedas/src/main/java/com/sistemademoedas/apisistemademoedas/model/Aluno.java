@@ -31,7 +31,6 @@ public class Aluno extends User {
     }
 
     public void update(AlunoRequestDTO alunoRequestDTO) {
-
         this.CPF = alunoRequestDTO.CPF() != null ? alunoRequestDTO.CPF() : this.CPF;
         this.nome = alunoRequestDTO.nome() != null ? alunoRequestDTO.nome() : this.nome;
         this.curso = alunoRequestDTO.curso() != null ? alunoRequestDTO.curso() : this.curso;
