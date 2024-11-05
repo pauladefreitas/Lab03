@@ -3,8 +3,10 @@ package com.sistemademoedas.apisistemademoedas.service;
 import com.sistemademoedas.apisistemademoedas.exception.AlunoNotFoundException;
 import com.sistemademoedas.apisistemademoedas.model.Aluno;
 import com.sistemademoedas.apisistemademoedas.model.dto.request.AlunoRequestDTO;
+import com.sistemademoedas.apisistemademoedas.model.dto.request.UserRequestDTO;
 import com.sistemademoedas.apisistemademoedas.model.dto.response.AlunoResponseDTO;
 import com.sistemademoedas.apisistemademoedas.repository.AlunoRepository;
+import com.sistemademoedas.apisistemademoedas.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,9 @@ public class AlunoService {
 
     @Autowired
     private AlunoRepository alunoRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     public Aluno findByID(Long id){
         Optional<Aluno> aluno = alunoRepository.findById(id);
