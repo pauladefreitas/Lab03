@@ -1,9 +1,11 @@
 package com.sistemademoedas.apisistemademoedas.controller;
 
 import com.sistemademoedas.apisistemademoedas.model.Professor;
+import com.sistemademoedas.apisistemademoedas.model.dto.request.GerenciadorMoedasRequestDTO;
 import com.sistemademoedas.apisistemademoedas.model.dto.request.ProfessorRequestDTO;
 import com.sistemademoedas.apisistemademoedas.model.dto.response.ProfessorResponseDTO;
 import com.sistemademoedas.apisistemademoedas.service.ProfessorService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +36,13 @@ public class ProfessorController {
     @PutMapping("/{id}")
     public ResponseEntity<ProfessorResponseDTO> update(@PathVariable Long id, @RequestBody ProfessorRequestDTO professorRequestDTO) {
         return ResponseEntity.ok(professorService.update(id, professorRequestDTO));
+    }
+
+    @PostMapping("/{id}/transacao")
+    public ResponseEntity<Void> enviaMoeda(@RequestParam Long id,
+                                           @RequestBody @Valid GerenciadorMoedasRequestDTO gerenciadorMoedasRequestDTO) {
+        professorService.enviaMoedas(id, gerenciadorMoedasRequestDTO);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")

@@ -15,7 +15,7 @@ import org.springframework.beans.BeanUtils;
 public class Professor extends User {
 
     private String departamento;
-    private int saldoMoedas;
+    private Integer saldoMoedas;
 
     public static Professor fromRequest(ProfessorRequestDTO professorRequestDTO, InstituicaoEnsino instituicaoEnsino) {
         Professor professor = new Professor();

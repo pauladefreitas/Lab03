@@ -19,7 +19,7 @@ public class Vantagem {
 
     private String nome;
     private String descricao;
-    private int valor;
+    private Integer valor;
 
     @ManyToOne
     @JoinColumn(name = "empresa_parceira_id")
