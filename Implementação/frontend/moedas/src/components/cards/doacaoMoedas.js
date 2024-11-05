@@ -1,4 +1,5 @@
 import * as React from 'react';
+import axios from 'axios';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -13,9 +14,22 @@ const BasicCard = () => {
   const [isButtonDisabled, setIsButtonDisabled] = React.useState(true);
 
   React.useEffect(() => {
-    // Habilita o botão se todos os campos estiverem preenchidos
     setIsButtonDisabled(!(user && coinAmount && reason));
   }, [user, coinAmount, reason]);
+
+  const handleDonate = async () => {
+    try {
+      const response = await axios.post(`http://localhost:8080/professor/87/transacao?id=87`, {
+        moedas: parseInt(coinAmount),
+        idAluno: parseInt(user),
+        descricao: reason
+    });
+      console.log('Doação realizada com sucesso:', response.data);
+    } catch (error) {
+      console.error('Erro ao realizar a doação:', error.response ? error.response.data : error.message);
+  }
+  
+  };
 
   return (
     <Card sx={{ minWidth: 275 }}>
@@ -30,7 +44,7 @@ const BasicCard = () => {
 
         <TextField 
           id="user" 
-          label="Usuário" 
+          label="Usuário (ID)" 
           variant="standard" 
           value={user} 
           onChange={(e) => setUser(e.target.value)} 
@@ -53,7 +67,11 @@ const BasicCard = () => {
       </CardContent>
 
       <CardActions>
-        <Button variant="contained" disabled={isButtonDisabled}>
+        <Button 
+          variant="contained" 
+          disabled={isButtonDisabled} 
+          onClick={handleDonate}
+        >
           DOAR
         </Button>
       </CardActions>

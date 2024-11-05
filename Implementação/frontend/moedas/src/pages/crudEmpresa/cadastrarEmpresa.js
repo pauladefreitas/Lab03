@@ -4,6 +4,24 @@ import { Button, TextField } from '@mui/material';
 import axios from 'axios';
 
 const CadastrarEmpresa = () => {
+    const [nome, setNome] = useState('');
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        
+        try {
+            const response = await axios.post('http://localhost:8080/empresas_parceiras', {
+                nome
+            });
+            
+            alert('Empresa cadastrada com sucesso!');
+            window.location.href = '/vizualizarEmpresa';
+        } catch (error) {
+            console.error('Erro ao salvar os dados:', error);
+            alert('Ocorreu um erro ao cadastrar a empresa. Tente novamente.');
+        }
+    };
+
     return (
         <div>
             <Header />
@@ -11,12 +29,14 @@ const CadastrarEmpresa = () => {
             <hr className='divider' />
 
             <div className='cadAluno'>
-                <form  className='dadosAluno'>
+                <form onSubmit={handleSubmit} className='dadosAluno'>
                     <TextField
                         label="Nome Empresa"
                         variant="standard"
                         name="nome"
                         required
+                        value={nome}
+                        onChange={(e) => setNome(e.target.value)}
                     />
                 
                     <Button

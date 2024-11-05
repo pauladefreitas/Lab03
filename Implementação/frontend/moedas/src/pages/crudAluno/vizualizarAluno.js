@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Header from '../../components/Header';
-import { Button, IconButton } from '@mui/material';
+import {
+    Button, IconButton, Snackbar, Alert, Dialog,
+    DialogActions, DialogContent, DialogContentText, DialogTitle
+} from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import './vizualizarAluno.css';
 import { useNavigate } from 'react-router-dom';
 
-const CadastrarAluno = () => {
+const VizualizarAluno = () => {
     const [alunos, setAlunos] = useState([]);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+    const [alunoToDelete, setAlunoToDelete] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -21,25 +28,42 @@ const CadastrarAluno = () => {
                 console.error('Erro ao carregar alunos:', error);
             }
         };
-        
+
         fetchAlunos();
     }, []);
 
-    const handleEdit = (id) => {
-        console.log(`Edit student with id: ${id}`);
+    const handleDeleteClick = (id) => {
+        setAlunoToDelete(id);
+        setDeleteDialogOpen(true);
     };
 
-    const handleDelete = async (id) => {
-        if (window.confirm('Tem certeza que deseja deletar este aluno?')) {
-            try {
-                await axios.delete(`http://localhost:8080/aluno/${id}`);
-                alert('Aluno deletado com sucesso!');
-                setAlunos(alunos.filter((aluno) => aluno.id !== id));
-            } catch (error) {
-                console.error('Erro ao deletar aluno:', error);
-                alert('Erro ao deletar o aluno.');
-            }
+    const confirmDelete = async () => {
+        try {
+            await axios.delete(`http://localhost:8080/aluno/${alunoToDelete}`);
+            setAlunos(alunos.filter((aluno) => aluno.id !== alunoToDelete));
+            setSnackbarMessage('Aluno deletado com sucesso!');
+            setSnackbarSeverity('success');
+        } catch (error) {
+            console.error('Erro ao deletar aluno:', error);
+            setSnackbarMessage('Erro ao deletar o aluno.');
+            setSnackbarSeverity('error');
         }
+        setSnackbarOpen(true);
+        setDeleteDialogOpen(false);
+        setAlunoToDelete(null);
+    };
+
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+    };
+
+    const handleDialogClose = () => {
+        setDeleteDialogOpen(false);
+        setAlunoToDelete(null);
+    };
+
+    const handleEdit = (id) => {
+        console.log(`Edit student with id: ${id}`);
     };
 
     const columns = [
@@ -51,7 +75,12 @@ const CadastrarAluno = () => {
         { field: 'curso', headerName: 'Curso', width: 150 },
         { field: 'rg', headerName: 'RG', width: 100 },
         { field: 'cpf', headerName: 'CPF', width: 150 },
-        { field: 'instituicaoEnsino', headerName: 'Instituição de Ensino', width: 150, valueGetter: (params) => params.row.instituicaoEnsino?.id },
+        {
+            field: 'instituicaoEnsino',
+            headerName: 'Instituição de Ensino',
+            width: 150,
+            valueGetter: (params) => params.row?.instituicaoEnsino?.id || ''
+        },
         {
             field: 'actions',
             headerName: 'Ações',
@@ -62,7 +91,7 @@ const CadastrarAluno = () => {
                     <IconButton color="primary" onClick={() => handleEdit(params.row.id)}>
                         <EditIcon />
                     </IconButton>
-                    <IconButton color="secondary" onClick={() => handleDelete(params.row.id)}>
+                    <IconButton color="secondary" onClick={() => handleDeleteClick(params.row.id)}>
                         <DeleteIcon />
                     </IconButton>
                 </>
@@ -111,11 +140,34 @@ const CadastrarAluno = () => {
                                 color: '#333',
                             },
                         }}
-                    />  
+                    />
                 </div>
             </div>
+
+            <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
+                <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
+
+            <Dialog open={deleteDialogOpen} onClose={handleDialogClose}>
+                <DialogTitle>Confirmar Exclusão</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Tem certeza que deseja deletar este aluno?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleDialogClose} color="primary">
+                        Cancelar
+                    </Button>
+                    <Button onClick={confirmDelete} color="secondary" autoFocus>
+                        Deletar
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </div>
     );
 };
 
-export default CadastrarAluno;
+export default VizualizarAluno;

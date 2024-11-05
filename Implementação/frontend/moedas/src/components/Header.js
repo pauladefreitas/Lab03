@@ -14,7 +14,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Logo from '../images/porco.png';
 
-const pages = ['Doar Moedas', 'Empresa', 'Aluno'];
+const pages = ['Doar Moedas', 'Empresa', 'Aluno', 'Login'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const ResponsiveAppBar = () => {
@@ -42,6 +42,10 @@ const ResponsiveAppBar = () => {
 
     if(page === 'Empresa'){
       navigate('/vizualizarEmpresa')
+    }
+
+    if(page === 'Login'){
+      navigate('/login');
     }
   };
 
@@ -74,7 +78,7 @@ const ResponsiveAppBar = () => {
               textDecoration: 'none',
             }}
           >
-            Moedas
+            chiCOIN
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
