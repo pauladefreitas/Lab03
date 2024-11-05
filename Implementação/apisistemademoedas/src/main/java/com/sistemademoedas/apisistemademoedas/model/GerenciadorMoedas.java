@@ -29,6 +29,7 @@ public class GerenciadorMoedas {
     private Professor professor;
     private Integer moedas;
     private String dataTransacao;
+    private String descricao;
 
     @PrePersist
     public void prePersist() {
@@ -42,6 +43,7 @@ public class GerenciadorMoedas {
         gerenciadorMoedas.setAluno(aluno);
         gerenciadorMoedas.setProfessor(professor);
         gerenciadorMoedas.setMoedas(gerenciadorMoedasRequestDTO.moedas());
+        gerenciadorMoedas.setDescricao(gerenciadorMoedasRequestDTO.descricao());
         BeanUtils.copyProperties(gerenciadorMoedasRequestDTO, gerenciadorMoedas);
         return gerenciadorMoedas;
     }

@@ -4,7 +4,9 @@ import com.sistemademoedas.apisistemademoedas.exception.AlunoNotFoundException;
 import com.sistemademoedas.apisistemademoedas.model.Aluno;
 import com.sistemademoedas.apisistemademoedas.model.dto.request.AlunoRequestDTO;
 import com.sistemademoedas.apisistemademoedas.model.dto.response.AlunoResponseDTO;
+import com.sistemademoedas.apisistemademoedas.model.dto.response.GerenciadorMoedasResponseDTO;
 import com.sistemademoedas.apisistemademoedas.repository.AlunoRepository;
+import com.sistemademoedas.apisistemademoedas.repository.GerenciadorMoedasRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,9 @@ public class AlunoService {
 
     @Autowired
     private AlunoRepository alunoRepository;
+
+    @Autowired
+    private GerenciadorMoedasRepository gerenciadorMoedasRepository;
 
     public Aluno findByID(Long id){
         Optional<Aluno> aluno = alunoRepository.findById(id);
@@ -34,6 +39,13 @@ public class AlunoService {
         return alunoRepository.findAll()
                 .stream()
                 .map(AlunoResponseDTO::fromEntity)
+                .toList();
+    }
+
+    public List<GerenciadorMoedasResponseDTO> getAllTransactionsByAlunoId(Long id) {
+        return gerenciadorMoedasRepository.findAllByAlunoId(id)
+                .stream()
+                .map(GerenciadorMoedasResponseDTO::fromEntity)
                 .toList();
     }
 

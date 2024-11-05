@@ -1,8 +1,10 @@
 package com.sistemademoedas.apisistemademoedas.controller;
 
+import com.sistemademoedas.apisistemademoedas.model.GerenciadorMoedas;
 import com.sistemademoedas.apisistemademoedas.model.Professor;
 import com.sistemademoedas.apisistemademoedas.model.dto.request.GerenciadorMoedasRequestDTO;
 import com.sistemademoedas.apisistemademoedas.model.dto.request.ProfessorRequestDTO;
+import com.sistemademoedas.apisistemademoedas.model.dto.response.GerenciadorMoedasResponseDTO;
 import com.sistemademoedas.apisistemademoedas.model.dto.response.ProfessorResponseDTO;
 import com.sistemademoedas.apisistemademoedas.service.ProfessorService;
 import jakarta.validation.Valid;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/professor")
@@ -50,4 +53,6 @@ public class ProfessorController {
         this.professorService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+
 }

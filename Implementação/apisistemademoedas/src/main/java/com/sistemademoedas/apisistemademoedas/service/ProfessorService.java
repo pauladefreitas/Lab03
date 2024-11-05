@@ -5,12 +5,15 @@ import com.sistemademoedas.apisistemademoedas.model.GerenciadorMoedas;
 import com.sistemademoedas.apisistemademoedas.model.Professor;
 import com.sistemademoedas.apisistemademoedas.model.dto.request.GerenciadorMoedasRequestDTO;
 import com.sistemademoedas.apisistemademoedas.model.dto.request.ProfessorRequestDTO;
+import com.sistemademoedas.apisistemademoedas.model.dto.response.GerenciadorMoedasResponseDTO;
 import com.sistemademoedas.apisistemademoedas.model.dto.response.ProfessorResponseDTO;
+import com.sistemademoedas.apisistemademoedas.repository.GerenciadorMoedasRepository;
 import com.sistemademoedas.apisistemademoedas.repository.ProfessorRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -19,10 +22,15 @@ public class ProfessorService {
 
     @Autowired
     private ProfessorRepository professorRepository;
+
     @Autowired
     private AlunoService alunoService;
+
     @Autowired
     private GerenciadorMoedasService gerenciadorMoedasService;
+
+    @Autowired
+    private GerenciadorMoedasRepository gerenciadorMoedasRepository;
 
     public Professor findByID(Long id){
         Optional<Professor> professor = professorRepository.findById(id);
@@ -69,5 +77,12 @@ public class ProfessorService {
 
         GerenciadorMoedas gerenciadorMoedas = GerenciadorMoedas.fromRequest(gerenciadorMoedasRequestDTO, professor, aluno);
         gerenciadorMoedasService.create(gerenciadorMoedas);
+    }
+
+    public List<GerenciadorMoedasResponseDTO> getAllTransactionsByProfessorId(Long id) {
+        return gerenciadorMoedasRepository.findAllByProfessorId(id)
+                .stream()
+                .map(GerenciadorMoedasResponseDTO::fromEntity)
+                .toList();
     }
 }
