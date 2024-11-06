@@ -13,7 +13,7 @@ const RecipeReviewCard = () => {
   useEffect(() => {
     axios.get('http://localhost:8080/gerenciador_moedas/professor/87')
       .then((response) => {
-        const saldo = response.data[0]?.professor?.saldoMoedas; // Access the first item in the array
+        const saldo = response.data[0]?.professor?.saldoMoedas;
         setSaldoMoedas(saldo);
       })
       .catch((error) => {
