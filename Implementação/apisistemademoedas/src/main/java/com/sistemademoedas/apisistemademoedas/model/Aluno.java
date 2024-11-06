@@ -1,12 +1,15 @@
 package com.sistemademoedas.apisistemademoedas.model;
 
+import org.springframework.beans.BeanUtils;
+
 import com.sistemademoedas.apisistemademoedas.model.dto.request.AlunoRequestDTO;
-import com.sistemademoedas.apisistemademoedas.model.dto.request.UserRequestDTO;
-import jakarta.persistence.*;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.BeanUtils;
 
 @Data
 @Entity
