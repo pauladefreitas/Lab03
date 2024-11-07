@@ -2,9 +2,14 @@ package com.sistemademoedas.apisistemademoedas.controller;
 
 import com.sistemademoedas.apisistemademoedas.model.EmpresaParceira;
 import com.sistemademoedas.apisistemademoedas.model.dto.request.EmpresaParceiraRequestDTO;
+import com.sistemademoedas.apisistemademoedas.model.dto.request.VantagemRequestDTO;
 import com.sistemademoedas.apisistemademoedas.model.dto.response.EmpresaParceiraResponseDTO;
+import com.sistemademoedas.apisistemademoedas.model.dto.response.VantagemResponseDTO;
 import com.sistemademoedas.apisistemademoedas.service.EmpresaParceiraService;
+import com.sistemademoedas.apisistemademoedas.service.VantagemService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -19,6 +24,9 @@ public class EmpresaParceiraController {
     @Autowired
     private EmpresaParceiraService empresaParceiraService;
 
+    @Autowired
+    private VantagemService vantagemService;
+
     @GetMapping("/{id}")
     public ResponseEntity<EmpresaParceira> findById(@PathVariable Long id) {
         EmpresaParceira obj = this.empresaParceiraService.findByID(id);
@@ -31,10 +39,8 @@ public class EmpresaParceiraController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody EmpresaParceira obj) {
-        this.empresaParceiraService.create(obj);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-        return ResponseEntity.created(uri).build();
+    public ResponseEntity<EmpresaParceiraResponseDTO> create(@RequestBody @Valid EmpresaParceiraRequestDTO obj) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(empresaParceiraService.create(obj));
     }
 
     @PutMapping("/{id}")
@@ -46,5 +52,12 @@ public class EmpresaParceiraController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         this.empresaParceiraService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{id}/vantagens")
+    public ResponseEntity<Void> createVantagem(@RequestParam Long id,
+                                               @RequestBody @Valid VantagemRequestDTO vantagemRequestDTO) {
+        empresaParceiraService.addVantagem(id, vantagemRequestDTO);
+        return ResponseEntity.ok().build();
     }
 }

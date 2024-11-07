@@ -25,14 +25,19 @@ public class VantagemService {
     }
 
     @Transactional
-    public Vantagem create(Vantagem vantagem){
-        vantagem.setId(null);
-        vantagem = this.vantagemRepository.save(vantagem);
-        return vantagem;
+    public void create(Vantagem vantagem){
+        vantagemRepository.save(vantagem);
     }
 
     public List<VantagemResponseDTO> getAll() {
         return vantagemRepository.findAll()
+                .stream()
+                .map(VantagemResponseDTO::fromEntity)
+                .toList();
+    }
+
+    public List<VantagemResponseDTO> getAllByEmpresaParceiraId(Long empresa_parceira_id) {
+        return vantagemRepository.findAllByEmpresaParceiraId(empresa_parceira_id)
                 .stream()
                 .map(VantagemResponseDTO::fromEntity)
                 .toList();
