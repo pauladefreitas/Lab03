@@ -5,13 +5,16 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { TextField } from '@mui/material';
+import { TextField, Snackbar, Alert } from '@mui/material';
 
 const BasicCard = () => {
   const [user, setUser] = React.useState('');
   const [coinAmount, setCoinAmount] = React.useState('');
   const [reason, setReason] = React.useState('');
   const [isButtonDisabled, setIsButtonDisabled] = React.useState(true);
+  const [openSuccessSnackbar, setOpenSuccessSnackbar] = React.useState(false); 
+  const [openErrorSnackbar, setOpenErrorSnackbar] = React.useState(false); 
+  const [errorMessage, setErrorMessage] = React.useState(''); 
 
   React.useEffect(() => {
     setIsButtonDisabled(!(user && coinAmount && reason));
@@ -23,12 +26,25 @@ const BasicCard = () => {
         moedas: parseInt(coinAmount),
         idAluno: parseInt(user),
         descricao: reason
-    });
+      });
       console.log('Doação realizada com sucesso:', response.data);
+      setOpenSuccessSnackbar(true); 
     } catch (error) {
-      console.error('Erro ao realizar a doação:', error.response ? error.response.data : error.message);
-  }
-  
+      const message = 
+        error.response && typeof error.response.data === 'string' && error.response.data.includes("saldo insuficiente")
+          ? "Saldo insuficiente!"
+          : "Erro ao realizar a doação!";
+      setErrorMessage(message);
+      setOpenErrorSnackbar(true); 
+    }
+  };
+
+  const handleCloseSnackbar = () => {
+    setOpenSuccessSnackbar(false);
+    setOpenErrorSnackbar(false);
+    if (openSuccessSnackbar) {
+      window.location.reload(); 
+    }
   };
 
   return (
@@ -75,6 +91,26 @@ const BasicCard = () => {
           DOAR
         </Button>
       </CardActions>
+
+      <Snackbar
+        open={openSuccessSnackbar}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
+          Doação realizada com sucesso!
+        </Alert>
+      </Snackbar>
+
+      <Snackbar
+        open={openErrorSnackbar}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert onClose={handleCloseSnackbar} severity="error" sx={{ width: '100%' }}>
+          {errorMessage}
+        </Alert>
+      </Snackbar>
     </Card>
   );
 }
