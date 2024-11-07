@@ -1,5 +1,7 @@
 package com.sistemademoedas.apisistemademoedas.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sistemademoedas.apisistemademoedas.model.dto.request.EmpresaParceiraRequestDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -22,7 +25,9 @@ public class EmpresaParceira {
     private String nome;
 
     @OneToMany(mappedBy = "empresaParceira", cascade = CascadeType.ALL)
-    private List<Vantagem> vantagens;
+    @JsonManagedReference
+    @JsonIgnore //com isso aqui, está retornando apenas id e nome da empresa
+    private List<Vantagem> vantagens = new ArrayList<>();
 
     public static EmpresaParceira fromRequest(EmpresaParceiraRequestDTO empresaParceiraRequestDTO) {
         EmpresaParceira empresaParceira = new EmpresaParceira();

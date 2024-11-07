@@ -1,5 +1,6 @@
 package com.sistemademoedas.apisistemademoedas.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.sistemademoedas.apisistemademoedas.model.dto.request.VantagemRequestDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -22,7 +23,8 @@ public class Vantagem {
     private Integer valor;
 
     @ManyToOne
-    @JoinColumn(name = "empresa_parceira_id")
+    @JoinColumn(name = "empresa_parceira_id", nullable = false)
+    @JsonBackReference
     private EmpresaParceira empresaParceira;
 
     public static Vantagem fromRequest(VantagemRequestDTO vantagemRequestDTO, EmpresaParceira empresaParceira) {
