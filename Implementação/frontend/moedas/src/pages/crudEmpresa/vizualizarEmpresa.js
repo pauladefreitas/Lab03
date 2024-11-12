@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Header from '../../components/Header';
 import ModalVerVantagem from "../../components/modals/modalVerVantagem";
+import ModalAddVantagem from '../../components/modals/modalAddVantagem';
 import {
     Button, IconButton, Snackbar, Alert, Dialog,
     DialogActions, DialogContent, DialogContentText, DialogTitle, TextField
@@ -12,7 +14,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import Tooltip from '@mui/material/Tooltip';
-import { useNavigate } from 'react-router-dom';
 import '../crudAluno/vizualizarAluno.css';
 
 const VizualizarEmpresa = () => {
@@ -27,7 +28,8 @@ const VizualizarEmpresa = () => {
     const [selectedEmpresa, setSelectedEmpresa] = useState(null);
     const [editedNome, setEditedNome] = useState('');
     const [vantagens, setVantagens] = useState([]);
-    const [openVantagemModal, setOpenVantagemModal] = useState(false);
+    const [openViewVantagemModal, setOpenViewVantagemModal] = useState(false);
+    const [openAddVantagemModal, setOpenAddVantagemModal] = useState(false);
 
     useEffect(() => {
         const fetchEmpresas = async () => {
@@ -102,16 +104,25 @@ const VizualizarEmpresa = () => {
         try {
             const response = await axios.get(`http://localhost:8080/vantagens/${empresaId}`);
             setVantagens(response.data);
-            setOpenVantagemModal(true);
+            setOpenViewVantagemModal(true); 
         } catch (error) {
             console.error('Erro ao carregar vantagens:', error);
         }
     };
+    
 
     const handleViewVantagensClick = (empresa) => {
         setSelectedEmpresa(empresa);
         fetchVantagens(empresa.id);
+        setOpenViewVantagemModal(true);
     };
+
+    const handleAddVantagemClick = (empresa) => {
+        setSelectedEmpresa(empresa);
+        setOpenAddVantagemModal(true);
+    };
+
+
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 100 },
@@ -136,10 +147,7 @@ const VizualizarEmpresa = () => {
                     <Tooltip title="Adicionar Vantagem">
                         <IconButton
                             sx={{ color: 'green' }}
-                            onClick={() => {
-                                setSelectedEmpresa(params.row);
-                                setOpenVantagemModal(true);
-                            }}
+                            onClick={() => handleAddVantagemClick(params.row)}
                         >
                             <AddCircleIcon />
                         </IconButton>
@@ -251,10 +259,19 @@ const VizualizarEmpresa = () => {
             </Dialog>
 
             <ModalVerVantagem
-                open={openVantagemModal}
-                onClose={() => setOpenVantagemModal(false)}
+                open={openViewVantagemModal}
+                onClose={() => setOpenViewVantagemModal(false)}
                 vantagens={vantagens}
                 onDeleteSuccess={handleDeleteSuccess}
+            />
+
+            <ModalAddVantagem
+                open={openAddVantagemModal}
+                onClose={() => setOpenAddVantagemModal(false)}
+                empresa={selectedEmpresa}
+                onSuccess={() => {
+                    fetchVantagens(selectedEmpresa.id);
+                }}
             />
         </div>
     );

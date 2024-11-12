@@ -1,5 +1,6 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Tooltip } from "@mui/material";
 import { GridDeleteIcon } from "@mui/x-data-grid";
+import EditIcon from '@mui/icons-material/Edit';
 import axios from "axios";
 
 const ModalVerVantagem = ({ open, onClose, vantagens, onDeleteSuccess }) => {
@@ -7,7 +8,7 @@ const ModalVerVantagem = ({ open, onClose, vantagens, onDeleteSuccess }) => {
         try {
             await axios.delete(`http://localhost:8080/vantagens/${id}`);
             alert("Vantagem deletada com sucesso!");
-            onDeleteSuccess(); 
+            onDeleteSuccess();
         } catch (error) {
             console.error("Erro ao deletar a vantagem:", error);
             alert("Erro ao deletar a vantagem.");
@@ -24,6 +25,7 @@ const ModalVerVantagem = ({ open, onClose, vantagens, onDeleteSuccess }) => {
                             key={vantagem.id}
                             style={{
                                 display: "flex",
+                                flexDirection: "column",
                                 justifyContent: "space-between",
                                 alignItems: "center",
                                 marginBottom: "1rem",
@@ -37,13 +39,23 @@ const ModalVerVantagem = ({ open, onClose, vantagens, onDeleteSuccess }) => {
                                 <p><strong>Descrição:</strong> {vantagem.descricao}</p>
                                 <p><strong>Valor:</strong> R$ {vantagem.valor}</p>
                             </div>
-                            <IconButton
-                                onClick={() => handleDelete(vantagem.id)}
-                                style={{ color: "red" }}
-                                aria-label="Deletar Vantagem"
-                            >
-                                <GridDeleteIcon />
-                            </IconButton>
+
+                            <div>
+                                <IconButton
+                                    onClick={() => handleDelete(vantagem.id)}
+                                    style={{ color: "red" }}
+                                    aria-label="Deletar Vantagem"
+                                >
+                                    <GridDeleteIcon />
+                                </IconButton>
+
+                                <Tooltip title="Editar Vantagem">
+                                    <IconButton sx={{ color: '#191970' }}>
+                                        <EditIcon />
+                                    </IconButton>
+                                </Tooltip>
+                            </div>
+
                         </div>
                     ))
                 ) : (
