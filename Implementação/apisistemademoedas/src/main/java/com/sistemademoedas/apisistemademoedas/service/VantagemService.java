@@ -4,7 +4,6 @@ import com.sistemademoedas.apisistemademoedas.exception.VantagemNotFoundExceptio
 import com.sistemademoedas.apisistemademoedas.model.Vantagem;
 import com.sistemademoedas.apisistemademoedas.model.dto.request.VantagemRequestDTO;
 import com.sistemademoedas.apisistemademoedas.model.dto.response.VantagemResponseDTO;
-import com.sistemademoedas.apisistemademoedas.model.dto.response.VantagemResponseDTO;
 import com.sistemademoedas.apisistemademoedas.repository.VantagemRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

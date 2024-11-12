@@ -5,6 +5,7 @@ import com.sistemademoedas.apisistemademoedas.exception.ProfessorNotFoundExcepti
 import com.sistemademoedas.apisistemademoedas.model.dto.request.InstituicaoEnsinoRequestDTO;
 import com.sistemademoedas.apisistemademoedas.model.dto.request.ProfessorRequestDTO;
 import com.sistemademoedas.apisistemademoedas.model.dto.response.InstituicaoEnsinoResponseDTO;
+import com.sistemademoedas.apisistemademoedas.model.enums.RoleEnum;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -28,6 +29,9 @@ public class InstituicaoEnsino {
     @OneToMany(mappedBy = "instituicaoEnsino")
     @JsonManagedReference
     private List<Professor> professores;
+
+    @Enumerated
+    RoleEnum role;
 
     public static InstituicaoEnsino fromRequest(InstituicaoEnsinoRequestDTO instituicaoEnsinoRequestDTO) {
         InstituicaoEnsino instituicaoEnsino = new InstituicaoEnsino();

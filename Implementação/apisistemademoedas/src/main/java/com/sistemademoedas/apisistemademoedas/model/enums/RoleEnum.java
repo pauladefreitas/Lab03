@@ -9,7 +9,9 @@ import java.util.Objects;
 @Getter
 public enum RoleEnum {
     ALUNO(1, "ROLE_ALUNO"),
-    PROFESSOR(2, "ROLE_PROFESSOR");
+    PROFESSOR(2, "ROLE_PROFESSOR"),
+    EMPRESA(3, "ROLE_EMPRESA_PARCEIRA"),
+    INSTITUICAO(4, "ROLE_INSTITUICAO");
 
     private Integer code;
     private String description;
