@@ -14,7 +14,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Logo from '../images/porco.png';
 
-const pages = ['Doar Moedas', 'Empresa', 'Aluno', 'Login'];
+const pages = ['Doar Moedas', 'Empresa', 'Aluno', 'Login', 'Vantagem'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const ResponsiveAppBar = () => {
@@ -46,6 +46,10 @@ const ResponsiveAppBar = () => {
 
     if(page === 'Login'){
       navigate('/login');
+    }
+
+    if(page === 'Vantagem'){
+      navigate('/vizualizarVantagem')
     }
   };
 

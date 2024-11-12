@@ -13,7 +13,6 @@ import Typography from '@mui/material/Typography';
 import './doarMoedas.css';
 import axios from 'axios';
 
-
 const style = {
     position: 'absolute',
     top: '50%',

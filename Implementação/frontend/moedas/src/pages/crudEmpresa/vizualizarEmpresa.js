@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Header from '../../components/Header';
+import ModalAddVantagem from "../../components/modals/modalAddVantagem"
 import {
     Button, IconButton, Snackbar, Alert, Dialog,
     DialogActions, DialogContent, DialogContentText, DialogTitle, TextField
@@ -8,6 +9,7 @@ import {
 import { DataGrid } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useNavigate } from 'react-router-dom';
 import '../crudAluno/vizualizarAluno.css'
 
@@ -22,6 +24,8 @@ const VizualizarEmpresa = () => {
     const [openEditModal, setOpenEditModal] = useState(false);
     const [selectedEmpresa, setSelectedEmpresa] = useState(null);
     const [editedNome, setEditedNome] = useState('');
+    const [openVantagemModal, setOpenVantagemModal] = useState(false);
+
 
     useEffect(() => {
         const fetchEmpresas = async () => {
@@ -107,6 +111,15 @@ const VizualizarEmpresa = () => {
                     </IconButton>
                     <IconButton sx={{ color: '#FF0000' }} onClick={() => handleDeleteClick(params.row.id)}>
                         <DeleteIcon />
+                    </IconButton>
+                    <IconButton
+                        sx={{ color: 'green' }}
+                        onClick={() => {
+                            setSelectedEmpresa(params.row);
+                            setOpenVantagemModal(true);
+                        }}
+                    >
+                        <AddCircleIcon />
                     </IconButton>
                 </>
             ),
@@ -199,6 +212,13 @@ const VizualizarEmpresa = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
+
+            <ModalAddVantagem
+                open={openVantagemModal}
+                onClose={() => setOpenVantagemModal(false)}
+                empresaId={selectedEmpresa?.id}
+            />
+
         </div>
     );
 };
