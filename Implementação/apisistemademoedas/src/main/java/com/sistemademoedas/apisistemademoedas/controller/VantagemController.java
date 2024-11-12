@@ -30,4 +30,15 @@ public class VantagemController {
         return ResponseEntity.ok(vantagemService.getAll());
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<VantagemResponseDTO> update(@PathVariable Long id, @RequestBody VantagemRequestDTO vantagemRequestDTO) {
+        return ResponseEntity.ok(vantagemService.update(id, vantagemRequestDTO));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        this.vantagemService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

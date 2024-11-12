@@ -3,6 +3,7 @@ package com.sistemademoedas.apisistemademoedas.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sistemademoedas.apisistemademoedas.model.dto.request.EmpresaParceiraRequestDTO;
+import com.sistemademoedas.apisistemademoedas.model.enums.RoleEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,6 +29,14 @@ public class EmpresaParceira {
     @JsonManagedReference
     @JsonIgnore //com isso aqui, está retornando apenas id e nome da empresa
     private List<Vantagem> vantagens = new ArrayList<>();
+
+    @Enumerated
+    RoleEnum role;
+
+    @PrePersist
+    private void prePersist() {
+        this.role = RoleEnum.EMPRESA;
+    }
 
     public static EmpresaParceira fromRequest(EmpresaParceiraRequestDTO empresaParceiraRequestDTO) {
         EmpresaParceira empresaParceira = new EmpresaParceira();
