@@ -1,22 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Header from '../../components/Header';
+import VerMoedasDoadas from '../../components/cards/verMoedasDoadas';
 import {
     Button, IconButton, Snackbar, Alert, Dialog,
-    DialogActions, DialogContent, DialogContentText, DialogTitle
+    DialogActions, DialogContent, DialogTitle
 } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { useNavigate } from 'react-router-dom';
+import Chico from '../../images/chicoM.png'
 
 const VizualizarAluno = () => {
     const [alunos, setAlunos] = useState([]);
+    const [doacoes, setDoacoes] = useState([]); 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [alunoToDelete, setAlunoToDelete] = useState(null);
+    const [verMoedasOpen, setVerMoedasOpen] = useState(false);
+    const [selectedAlunoId, setSelectedAlunoId] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -66,15 +72,31 @@ const VizualizarAluno = () => {
         console.log(`Edit student with id: ${id}`);
     };
 
+    const handleViewCoinsClick = async (userId) => {
+        setSelectedAlunoId(userId);
+        try {
+            const response = await axios.get(`http://localhost:8080/gerenciador_moedas/aluno/${userId}`);
+            setDoacoes(response.data); 
+            setVerMoedasOpen(true);
+        } catch (error) {
+            console.error('Erro ao carregar doações:', error);
+        }
+    };
+
+    const handleVerMoedasClose = () => {
+        setVerMoedasOpen(false);
+        setDoacoes([]);
+    };
+
     const columns = [
         { field: 'id', headerName: 'ID', width: 10 },
-        { field: 'nome', headerName: 'Nome', width: 120 },
+        { field: 'nome', headerName: 'Nome', width: 90 },
         { field: 'email', headerName: 'Email', width: 150 },
         { field: 'endereco', headerName: 'Endereço', width: 150 },
         { field: 'saldoMoedas', headerName: 'Moedas', width: 70 },
         { field: 'curso', headerName: 'Curso', width: 150 },
-        { field: 'rg', headerName: 'RG', width: 100 },
-        { field: 'cpf', headerName: 'CPF', width: 150 },
+        { field: 'RG', headerName: 'RG', width: 100 },
+        { field: 'CPF', headerName: 'CPF', width: 150 },
         {
             field: 'instituicaoEnsino',
             headerName: 'Instituição de Ensino',
@@ -84,7 +106,7 @@ const VizualizarAluno = () => {
         {
             field: 'actions',
             headerName: 'Ações',
-            width: 120,
+            width: 150,
             sortable: false,
             renderCell: (params) => (
                 <>
@@ -94,14 +116,17 @@ const VizualizarAluno = () => {
                     <IconButton color="secondary" onClick={() => handleDeleteClick(params.row.id)}>
                         <DeleteIcon />
                     </IconButton>
+                    <IconButton color="secondary" onClick={() => handleViewCoinsClick(params.row.id)}>
+                        <RemoveRedEyeIcon />
+                    </IconButton>
                 </>
             )
         }
     ];
 
     const cadAluno = () => {
-        navigate('/cadastrarAluno')
-    }
+        navigate('/cadastrarAluno');
+    };
 
     return (
         <div>
@@ -122,7 +147,7 @@ const VizualizarAluno = () => {
             <hr className='divider' />
 
             <div className="tableContainer">
-                <div style={{ height: 400, width: '90%' }}>
+                <div style={{ height: 400, width: '95%' }}>
                     <DataGrid
                         rows={alunos}
                         columns={columns}
@@ -152,19 +177,23 @@ const VizualizarAluno = () => {
 
             <Dialog open={deleteDialogOpen} onClose={handleDialogClose}>
                 <DialogTitle>Confirmar Exclusão</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        Tem certeza que deseja deletar este aluno?
-                    </DialogContentText>
-                </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleDialogClose} color="primary">
-                        Cancelar
-                    </Button>
-                    <Button onClick={confirmDelete} color="secondary" autoFocus>
-                        Deletar
-                    </Button>
+                    <Button onClick={handleDialogClose} color="primary">Cancelar</Button>
+                    <Button onClick={confirmDelete} color="secondary" autoFocus>Deletar</Button>
                 </DialogActions>
+            </Dialog>
+
+            <Dialog open={verMoedasOpen} onClose={handleVerMoedasClose} fullWidth maxWidth="sm">
+                <div  style={{ display: 'flex', alignItems: 'center', flexDirection:'column', }}>
+                    <h1>Veja sua moedas recebidas</h1>
+                    {/* <img src={Chico} style={{ width: '120px', textAlign: 'center' }}></img> */}
+                </div>
+                <DialogContent >
+                    
+                    {doacoes.map((doacao) => (
+                        <VerMoedasDoadas key={doacao.id} doacao={doacao} />
+                    ))}
+                </DialogContent>
             </Dialog>
         </div>
     );
