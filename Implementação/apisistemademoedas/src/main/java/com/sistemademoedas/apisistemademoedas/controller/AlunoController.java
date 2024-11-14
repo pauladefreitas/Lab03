@@ -2,8 +2,10 @@ package com.sistemademoedas.apisistemademoedas.controller;
 
 import com.sistemademoedas.apisistemademoedas.model.Aluno;
 import com.sistemademoedas.apisistemademoedas.model.dto.request.AlunoRequestDTO;
+import com.sistemademoedas.apisistemademoedas.model.dto.request.GerenciadorVantagensRequestDTO;
 import com.sistemademoedas.apisistemademoedas.model.dto.response.AlunoResponseDTO;
 import com.sistemademoedas.apisistemademoedas.service.AlunoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,5 +48,12 @@ public class AlunoController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         this.alunoService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{id}/resgateVantagens")
+    public ResponseEntity<Void> resgataVantagem(@PathVariable Long id,
+                                                @RequestBody @Valid GerenciadorVantagensRequestDTO gerenciadorVantagensRequestDTO) {
+        alunoService.resgataVantagem(id, gerenciadorVantagensRequestDTO.vantagemId());
+        return ResponseEntity.ok().build();
     }
 }

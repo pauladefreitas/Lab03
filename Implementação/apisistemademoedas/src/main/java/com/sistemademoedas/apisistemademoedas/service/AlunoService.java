@@ -2,19 +2,21 @@ package com.sistemademoedas.apisistemademoedas.service;
 
 import com.sistemademoedas.apisistemademoedas.exception.AlunoNotFoundException;
 import com.sistemademoedas.apisistemademoedas.model.Aluno;
+import com.sistemademoedas.apisistemademoedas.model.GerenciadorVantagens;
+import com.sistemademoedas.apisistemademoedas.model.Vantagem;
 import com.sistemademoedas.apisistemademoedas.model.dto.request.AlunoRequestDTO;
+import com.sistemademoedas.apisistemademoedas.model.dto.request.GerenciadorVantagensRequestDTO;
 import com.sistemademoedas.apisistemademoedas.model.dto.request.UserRequestDTO;
 import com.sistemademoedas.apisistemademoedas.model.dto.response.AlunoResponseDTO;
 import com.sistemademoedas.apisistemademoedas.model.dto.response.GerenciadorMoedasResponseDTO;
-import com.sistemademoedas.apisistemademoedas.repository.AlunoRepository;
+import com.sistemademoedas.apisistemademoedas.repository.*;
 
-import com.sistemademoedas.apisistemademoedas.repository.GerenciadorMoedasRepository;
-import com.sistemademoedas.apisistemademoedas.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -27,8 +29,10 @@ public class AlunoService {
     private GerenciadorMoedasRepository gerenciadorMoedasRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private VantagemRepository vantagemRepository;
 
+    @Autowired
+    private GerenciadorVantagensRepository gerenciadorVantagensRepository;
 
     public Aluno findByID(Long id){
         Optional<Aluno> aluno = alunoRepository.findById(id);
@@ -73,4 +77,26 @@ public class AlunoService {
             throw new RuntimeException("Não é possivel excluir um aluno.");
         }
     }
+
+    @Transactional
+    public void resgataVantagem(Long alunoId, Long vantagemId) {
+        Aluno aluno = alunoRepository.findById(alunoId)
+                .orElseThrow(() -> new NoSuchElementException("Aluno não encontrado. Id " + alunoId));
+
+        Vantagem vantagem = vantagemRepository.findById(vantagemId)
+                .orElseThrow(() -> new NoSuchElementException("Vantagem não encontrada. Id " + vantagemId));
+
+        if (aluno.getSaldoMoedas() < vantagem.getValor()) {
+            throw new IllegalArgumentException("Saldo insuficiente. O saldo atual do aluno é " + aluno.getSaldoMoedas() + ".");
+        }
+
+        aluno.setSaldoMoedas(aluno.getSaldoMoedas() - vantagem.getValor());
+        alunoRepository.save(aluno);
+
+        GerenciadorVantagens gerenciadorVantagens = new GerenciadorVantagens();
+        gerenciadorVantagens.setAluno(aluno);
+        gerenciadorVantagens.setVantagem(vantagem);
+        gerenciadorVantagensRepository.save(gerenciadorVantagens);
+    }
+
 }
