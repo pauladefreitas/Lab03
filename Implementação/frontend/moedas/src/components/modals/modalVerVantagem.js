@@ -34,7 +34,7 @@ const ModalVerVantagem = ({ open, onClose, vantagens, onDeleteSuccess }) => {
 
     const handleSaveEdit = async () => {
         try {
-            await axios.put(http://localhost:8080/vantagens/${selectedVantagem.id}, editedVantagem);
+            await axios.put(`http://localhost:8080/vantagens/${selectedVantagem.id}`, editedVantagem);
             alert("Vantagem editada com sucesso!");
             onDeleteSuccess(); 
             setEditModalOpen(false);
@@ -46,7 +46,7 @@ const ModalVerVantagem = ({ open, onClose, vantagens, onDeleteSuccess }) => {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(http://localhost:8080/vantagens/${id});
+            await axios.delete(`http://localhost:8080/vantagens/${id}`);
             alert("Vantagem deletada com sucesso!");
             onDeleteSuccess();
         } catch (error) {

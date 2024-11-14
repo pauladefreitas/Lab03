@@ -9,8 +9,11 @@ import com.sistemademoedas.apisistemademoedas.model.dto.request.GerenciadorVanta
 import com.sistemademoedas.apisistemademoedas.model.dto.request.UserRequestDTO;
 import com.sistemademoedas.apisistemademoedas.model.dto.response.AlunoResponseDTO;
 import com.sistemademoedas.apisistemademoedas.model.dto.response.GerenciadorMoedasResponseDTO;
+import com.sistemademoedas.apisistemademoedas.model.enums.RoleEnum;
+import com.sistemademoedas.apisistemademoedas.model.security.UserAuth;
 import com.sistemademoedas.apisistemademoedas.repository.*;
 
+import com.sistemademoedas.apisistemademoedas.service.security.UserAuthService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +32,9 @@ public class AlunoService {
     private GerenciadorMoedasRepository gerenciadorMoedasRepository;
 
     @Autowired
+    private UserAuthService userAuthService;
+
+    @Autowired
     private VantagemRepository vantagemRepository;
 
     @Autowired
@@ -41,6 +47,13 @@ public class AlunoService {
 
     @Transactional
     public Aluno create(Aluno aluno){
+        var userAuth = UserAuth.builder()
+                .email(aluno.getEmail())
+                .senha(aluno.getUserAuth().getSenha())
+                        .role(RoleEnum.ALUNO)
+                                .build();
+        userAuthService.create(userAuth);
+        aluno.setUserAuth(userAuth);
         aluno.setId(null);
         aluno.setSaldoMoedas(0);
         aluno = this.alunoRepository.save(aluno);

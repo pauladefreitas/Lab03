@@ -13,7 +13,8 @@ const CadastrarAluno = () => {
         curso: '',
         rg: '',
         cpf: '',
-        instituicaoEnsino: 1
+        instituicaoEnsino: 1,
+        senha: ''
     });
     const [cpf, setCpf] = useState('');
 
@@ -62,7 +63,8 @@ const CadastrarAluno = () => {
                 curso: '',
                 rg: '',
                 cpf: '',
-                instituicaoEnsino: 1
+                instituicaoEnsino: 1,
+                senha: ''
             });
         } catch (error) {
             alert('Erro ao cadastrar aluno: ' + error.response?.data || error.message);
@@ -141,6 +143,15 @@ const CadastrarAluno = () => {
                         name="instituicaoEnsino"
                         type="number"
                         value={formData.instituicaoEnsino}
+                        onChange={handleChange}
+                        required
+                    />
+                    <TextField
+                        label="Senha"
+                        variant="standard"
+                        name="senha"
+                        type="password"
+                        value={formData.senha}
                         onChange={handleChange}
                         required
                     />

@@ -1,5 +1,7 @@
 package com.sistemademoedas.apisistemademoedas.model;
 
+import com.sistemademoedas.apisistemademoedas.model.security.UserAuth;
+import jakarta.persistence.OneToOne;
 import org.springframework.beans.BeanUtils;
 
 import com.sistemademoedas.apisistemademoedas.model.dto.request.AlunoRequestDTO;
@@ -25,6 +27,9 @@ public class Aluno extends User {
     private Integer saldoMoedas;
 
     private String curso;
+
+    @OneToOne
+    private UserAuth userAuth;
 
     public static Aluno fromRequest(AlunoRequestDTO alunoRequestDTO, InstituicaoEnsino instituicaoEnsino) {
         Aluno aluno = new Aluno();
