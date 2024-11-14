@@ -1,0 +1,19 @@
+.lojaVantagem{
+    margin-left: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.listVantagem{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.storeC{
+    color: #191970;
+}
+
+.hrV{
+    border: 0.1px solid #ececec;
+}

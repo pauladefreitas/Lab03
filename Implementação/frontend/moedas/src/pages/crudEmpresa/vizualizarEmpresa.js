@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Header from '../../components/Header';
+import ModalVerVantagem from "../../components/modals/modalVerVantagem";
+import ModalAddVantagem from '../../components/modals/modalAddVantagem';
 import {
     Button, IconButton, Snackbar, Alert, Dialog,
     DialogActions, DialogContent, DialogContentText, DialogTitle, TextField
@@ -8,8 +11,10 @@ import {
 import { DataGrid } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useNavigate } from 'react-router-dom';
-import '../crudAluno/vizualizarAluno.css'
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import Tooltip from '@mui/material/Tooltip';
+import '../crudAluno/vizualizarAluno.css';
 
 const VizualizarEmpresa = () => {
     const navigate = useNavigate();
@@ -22,6 +27,9 @@ const VizualizarEmpresa = () => {
     const [openEditModal, setOpenEditModal] = useState(false);
     const [selectedEmpresa, setSelectedEmpresa] = useState(null);
     const [editedNome, setEditedNome] = useState('');
+    const [vantagens, setVantagens] = useState([]);
+    const [openViewVantagemModal, setOpenViewVantagemModal] = useState(false);
+    const [openAddVantagemModal, setOpenAddVantagemModal] = useState(false);
 
     useEffect(() => {
         const fetchEmpresas = async () => {
@@ -92,22 +100,63 @@ const VizualizarEmpresa = () => {
         setSelectedEmpresa(null);
     };
 
+    const fetchVantagens = async (empresaId) => {
+        try {
+            const response = await axios.get(`http://localhost:8080/vantagens/${empresaId}`);
+            setVantagens(response.data);
+            setOpenViewVantagemModal(true); 
+        } catch (error) {
+            console.error('Erro ao carregar vantagens:', error);
+        }
+    };
+    
+
+    const handleViewVantagensClick = (empresa) => {
+        setSelectedEmpresa(empresa);
+        fetchVantagens(empresa.id);
+        setOpenViewVantagemModal(true);
+    };
+
+    const handleAddVantagemClick = (empresa) => {
+        setSelectedEmpresa(empresa);
+        setOpenAddVantagemModal(true);
+    };
+
+
+
     const columns = [
         { field: 'id', headerName: 'ID', width: 100 },
         { field: 'nome', headerName: 'Nome da Empresa', width: 200 },
         {
             field: 'actions',
             headerName: 'Ações',
-            width: 150,
+            width: 250,
             sortable: false,
             renderCell: (params) => (
                 <>
-                    <IconButton sx={{ color: '#191970' }} onClick={() => handleEditClick(params.row)}>
-                        <EditIcon />
-                    </IconButton>
-                    <IconButton sx={{ color: '#FF0000' }} onClick={() => handleDeleteClick(params.row.id)}>
-                        <DeleteIcon />
-                    </IconButton>
+                    <Tooltip title="Editar Empresa">
+                        <IconButton sx={{ color: '#191970' }} onClick={() => handleEditClick(params.row)}>
+                            <EditIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Deletar Empresa">
+                        <IconButton sx={{ color: '#FF0000' }} onClick={() => handleDeleteClick(params.row.id)}>
+                            <DeleteIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Adicionar Vantagem">
+                        <IconButton
+                            sx={{ color: 'green' }}
+                            onClick={() => handleAddVantagemClick(params.row)}
+                        >
+                            <AddCircleIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Visualizar Vantagens">
+                        <IconButton color="secondary" onClick={() => handleViewVantagensClick(params.row)}>
+                            <RemoveRedEyeIcon />
+                        </IconButton>
+                    </Tooltip>
                 </>
             ),
         },
@@ -115,6 +164,15 @@ const VizualizarEmpresa = () => {
 
     const cadEmpresa = () => {
         navigate('/cadastrarEmpresa');
+    };
+
+    const handleDeleteSuccess = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8080/vantagens/${selectedEmpresa.id}`);
+            setVantagens(response.data);
+        } catch (error) {
+            console.error("Erro ao carregar vantagens atualizadas:", error);
+        }
     };
 
     return (
@@ -199,6 +257,22 @@ const VizualizarEmpresa = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
+
+            <ModalVerVantagem
+                open={openViewVantagemModal}
+                onClose={() => setOpenViewVantagemModal(false)}
+                vantagens={vantagens}
+                onDeleteSuccess={handleDeleteSuccess}
+            />
+
+            <ModalAddVantagem
+                open={openAddVantagemModal}
+                onClose={() => setOpenAddVantagemModal(false)}
+                empresa={selectedEmpresa}
+                onSuccess={() => {
+                    fetchVantagens(selectedEmpresa.id);
+                }}
+            />
         </div>
     );
 };

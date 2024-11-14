@@ -3,6 +3,7 @@ import VizualizarAluno from './pages/crudAluno/vizualizarAluno';
 import CadastrarAluno from './pages/crudAluno/cadastrarAluno';
 import VizualizarEmpresa from './pages/crudEmpresa/vizualizarEmpresa';
 import CadastrarEmpresa from './pages/crudEmpresa/cadastrarEmpresa';
+import VizualizarVantagem from './pages/crudVantage/vizualizarVantage';
 import Login from './pages/login/login'
 
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
@@ -17,6 +18,7 @@ function App() {
             <Route path="/cadastrarAluno" element={<CadastrarAluno />} />
             <Route path="/vizualizarEmpresa" element={<VizualizarEmpresa />} />
             <Route path="/cadastrarEmpresa" element={<CadastrarEmpresa />} />
+            <Route path="/vizualizarVantagem" element={<VizualizarVantagem />} />
             <Route path="/login" element={<Login />} />
           </Routes>
         </Router>

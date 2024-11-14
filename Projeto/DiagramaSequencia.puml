@@ -1,0 +1,22 @@
+@startuml
+actor "Empresa Parceira" as Empresa
+actor "Aluno" as Aluno
+participant "Cadastro de Vantagem" as Cadastro
+participant "Componente de Negócio" as Negocio
+database "Banco de Dados" as Banco
+
+Empresa -> Cadastro : Incluir dados vantagem()
+Cadastro -> Negocio : Verificar existência vantagem()
+Negocio -> Banco : Verificar existência vantagem no banco()
+Banco --> Negocio : Receber mensagem vantagem não encontrada()
+Negocio --> Cadastro : 
+Cadastro -> Negocio : Gravar dados vantagem()
+Negocio -> Banco : Inserir dados vantagem()
+Banco --> Negocio : 
+Negocio --> Cadastro : 
+Aluno -> Cadastro : Verificar vantagens()
+Cadastro -> Negocio : Verificar vantagens()
+Negocio -> Banco : Buscar dados vantagens()
+Banco --> Negocio : Receber dados vantagens()
+Negocio --> Cadastro : 
+@enduml
