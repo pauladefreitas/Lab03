@@ -19,7 +19,6 @@ public class VantagemController {
     @Autowired
     private VantagemService vantagemService;
 
-
     @GetMapping("/{empresa_parceira_id}")
     public ResponseEntity<List<VantagemResponseDTO>> getAllByEmpresaParceiraId(@PathVariable Long empresa_parceira_id) {
         return ResponseEntity.ok(vantagemService.getAllByEmpresaParceiraId(empresa_parceira_id));
@@ -28,6 +27,12 @@ public class VantagemController {
     @GetMapping
     public ResponseEntity<List<VantagemResponseDTO>> getAll() {
         return ResponseEntity.ok(vantagemService.getAll());
+    }
+
+    @GetMapping("/vantagem/{id}")
+    public ResponseEntity<Vantagem> findById(@PathVariable Long id) {
+        Vantagem obj = this.vantagemService.findByID(id);
+        return ResponseEntity.ok().body(obj);
     }
 
     @PutMapping("/{id}")
