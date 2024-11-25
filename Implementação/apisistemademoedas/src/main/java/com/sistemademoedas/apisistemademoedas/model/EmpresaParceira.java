@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sistemademoedas.apisistemademoedas.model.dto.request.EmpresaParceiraRequestDTO;
 import com.sistemademoedas.apisistemademoedas.model.enums.RoleEnum;
+import com.sistemademoedas.apisistemademoedas.model.security.UserAuth;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,6 +34,10 @@ public class EmpresaParceira {
 
     @Enumerated
     RoleEnum role;
+    @OneToOne
+    @JsonIgnore
+    @Schema(hidden = true)
+    private UserAuth userAuth;
 
     @PrePersist
     private void prePersist() {

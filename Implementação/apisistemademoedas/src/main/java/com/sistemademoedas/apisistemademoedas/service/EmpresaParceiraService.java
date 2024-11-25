@@ -6,12 +6,14 @@ import com.sistemademoedas.apisistemademoedas.model.Vantagem;
 import com.sistemademoedas.apisistemademoedas.model.dto.request.EmpresaParceiraRequestDTO;
 import com.sistemademoedas.apisistemademoedas.model.dto.request.VantagemRequestDTO;
 import com.sistemademoedas.apisistemademoedas.model.dto.response.EmpresaParceiraResponseDTO;
-import com.sistemademoedas.apisistemademoedas.model.dto.response.EmpresaParceiraResponseDTO;
-import com.sistemademoedas.apisistemademoedas.model.dto.response.VantagemResponseDTO;
+import com.sistemademoedas.apisistemademoedas.model.enums.RoleEnum;
+import com.sistemademoedas.apisistemademoedas.model.security.UserAuth;
 import com.sistemademoedas.apisistemademoedas.repository.EmpresaParceiraRepository;
 import com.sistemademoedas.apisistemademoedas.repository.VantagemRepository;
+import com.sistemademoedas.apisistemademoedas.service.security.UserAuthService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,15 +31,23 @@ public class EmpresaParceiraService {
 
     @Autowired
     private VantagemRepository vantagemRepository;
-
+    @Autowired
+    private UserAuthService userAuthService;
     public EmpresaParceira findByID(Long id){
         Optional<EmpresaParceira> empresaParceira = empresaParceiraRepository.findById(id);
         return empresaParceira.orElseThrow(() -> new RuntimeException("Empresa parceira não encontrada. Id" + id));
     }
 
     @Transactional
-    public EmpresaParceiraResponseDTO create(EmpresaParceiraRequestDTO empresaParceiraRequestDTO) {
+    public EmpresaParceiraResponseDTO create(EmpresaParceiraRequestDTO empresaParceiraRequestDTO, String senha) {
+        var userAuth = UserAuth.builder()
+                .email(empresaParceiraRequestDTO.email())
+                .senha(new BCryptPasswordEncoder().encode(senha))
+                .role(RoleEnum.EMPRESA)
+                .build();
+        userAuthService.create(userAuth);
         var empresaParceira = EmpresaParceira.fromRequest(empresaParceiraRequestDTO);
+        empresaParceira.setUserAuth(userAuth);
         empresaParceiraRepository.save(empresaParceira);
         return EmpresaParceiraResponseDTO.fromEntity(empresaParceira);
     }

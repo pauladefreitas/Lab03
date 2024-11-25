@@ -35,8 +35,8 @@ public class AlunoController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody Aluno obj) {
-        this.alunoService.create(obj);
+    public ResponseEntity<Void> create(@RequestBody Aluno obj, @RequestParam String senha) {
+        this.alunoService.create(obj, senha);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }

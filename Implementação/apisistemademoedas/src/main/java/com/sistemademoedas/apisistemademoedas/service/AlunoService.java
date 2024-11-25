@@ -5,8 +5,6 @@ import com.sistemademoedas.apisistemademoedas.model.Aluno;
 import com.sistemademoedas.apisistemademoedas.model.GerenciadorVantagens;
 import com.sistemademoedas.apisistemademoedas.model.Vantagem;
 import com.sistemademoedas.apisistemademoedas.model.dto.request.AlunoRequestDTO;
-import com.sistemademoedas.apisistemademoedas.model.dto.request.GerenciadorVantagensRequestDTO;
-import com.sistemademoedas.apisistemademoedas.model.dto.request.UserRequestDTO;
 import com.sistemademoedas.apisistemademoedas.model.dto.response.AlunoResponseDTO;
 import com.sistemademoedas.apisistemademoedas.model.dto.response.GerenciadorMoedasResponseDTO;
 import com.sistemademoedas.apisistemademoedas.model.enums.RoleEnum;
@@ -16,6 +14,7 @@ import com.sistemademoedas.apisistemademoedas.repository.*;
 import com.sistemademoedas.apisistemademoedas.service.security.UserAuthService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,18 +39,18 @@ public class AlunoService {
     @Autowired
     private GerenciadorVantagensRepository gerenciadorVantagensRepository;
 
-    public Aluno findByID(Long id){
+    public Aluno findByID(Long id) {
         Optional<Aluno> aluno = alunoRepository.findById(id);
         return aluno.orElseThrow(() -> new RuntimeException("Aluno não encontrado. Id" + id));
     }
 
     @Transactional
-    public Aluno create(Aluno aluno){
+    public Aluno create(Aluno aluno, String senha) {
         var userAuth = UserAuth.builder()
                 .email(aluno.getEmail())
-                .senha(aluno.getUserAuth().getSenha())
-                        .role(RoleEnum.ALUNO)
-                                .build();
+                .senha(new BCryptPasswordEncoder().encode(senha))
+                .role(RoleEnum.ALUNO)
+                .build();
         userAuthService.create(userAuth);
         aluno.setUserAuth(userAuth);
         aluno.setId(null);
@@ -82,7 +81,7 @@ public class AlunoService {
         return AlunoResponseDTO.fromEntity(aluno);
     }
 
-    public void delete(Long id){
+    public void delete(Long id) {
         alunoRepository.findById(id);
         try {
             alunoRepository.deleteById(id);
