@@ -1,5 +1,9 @@
 package com.sistemademoedas.apisistemademoedas.model;
 
+import com.sistemademoedas.apisistemademoedas.model.security.UserAuth;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.OneToOne;
+import net.minidev.json.annotate.JsonIgnore;
 import org.springframework.beans.BeanUtils;
 
 import com.sistemademoedas.apisistemademoedas.model.dto.request.AlunoRequestDTO;
@@ -25,6 +29,11 @@ public class Aluno extends User {
     private Integer saldoMoedas;
 
     private String curso;
+
+    @OneToOne
+    @JsonIgnore
+    @Schema(hidden = true)
+    private UserAuth userAuth;
 
     public static Aluno fromRequest(AlunoRequestDTO alunoRequestDTO, InstituicaoEnsino instituicaoEnsino) {
         Aluno aluno = new Aluno();

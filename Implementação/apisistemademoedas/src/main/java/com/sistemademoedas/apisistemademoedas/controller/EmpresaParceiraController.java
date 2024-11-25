@@ -39,8 +39,8 @@ public class EmpresaParceiraController {
     }
 
     @PostMapping
-    public ResponseEntity<EmpresaParceiraResponseDTO> create(@RequestBody @Valid EmpresaParceiraRequestDTO obj) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(empresaParceiraService.create(obj));
+    public ResponseEntity<EmpresaParceiraResponseDTO> create(@RequestBody @Valid EmpresaParceiraRequestDTO obj, @RequestParam String senha) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(empresaParceiraService.create(obj, senha));
     }
 
     @PutMapping("/{id}")

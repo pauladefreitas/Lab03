@@ -4,7 +4,9 @@ import com.sistemademoedas.apisistemademoedas.model.Aluno;
 import com.sistemademoedas.apisistemademoedas.model.dto.request.AlunoRequestDTO;
 import com.sistemademoedas.apisistemademoedas.model.dto.request.GerenciadorVantagensRequestDTO;
 import com.sistemademoedas.apisistemademoedas.model.dto.response.AlunoResponseDTO;
+import com.sistemademoedas.apisistemademoedas.model.security.UserAuth;
 import com.sistemademoedas.apisistemademoedas.service.AlunoService;
+import com.sistemademoedas.apisistemademoedas.service.security.UserAuthService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -33,8 +35,8 @@ public class AlunoController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody Aluno obj) {
-        this.alunoService.create(obj);
+    public ResponseEntity<Void> create(@RequestBody Aluno obj, @RequestParam String senha) {
+        this.alunoService.create(obj, senha);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }

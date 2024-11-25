@@ -75,9 +75,11 @@ const VizualizarAluno = () => {
     const handleViewCoinsClick = async (userId) => {
         setSelectedAlunoId(userId);
         try {
-            const response = await axios.get(`http://localhost:8080/gerenciador_moedas/aluno/${userId}`);
+            const response = await axios.get(`http://localhost:8080/gerenciador_moedas/aluno/${userId}`, {
+            });
             setDoacoes(response.data); 
             setVerMoedasOpen(true);
+
         } catch (error) {
             console.error('Erro ao carregar doações:', error);
         }

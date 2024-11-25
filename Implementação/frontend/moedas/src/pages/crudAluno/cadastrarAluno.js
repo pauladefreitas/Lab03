@@ -13,9 +13,11 @@ const CadastrarAluno = () => {
         curso: '',
         rg: '',
         cpf: '',
-        instituicaoEnsino: 1
+        instituicaoEnsino: 1,
+        senha: ''
     });
     const [cpf, setCpf] = useState('');
+    const [senha, setSenha] = useState('')
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -46,7 +48,7 @@ const CadastrarAluno = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:8080/aluno', {
+            const response = await axios.post(`http://localhost:8080/aluno?senha=${senha}`, {
                 ...formData,
                 role: "ALUNO",
                 instituicaoEnsino: {
@@ -62,7 +64,7 @@ const CadastrarAluno = () => {
                 curso: '',
                 rg: '',
                 cpf: '',
-                instituicaoEnsino: 1
+                instituicaoEnsino: 1,
             });
         } catch (error) {
             alert('Erro ao cadastrar aluno: ' + error.response?.data || error.message);
@@ -141,6 +143,15 @@ const CadastrarAluno = () => {
                         name="instituicaoEnsino"
                         type="number"
                         value={formData.instituicaoEnsino}
+                        onChange={handleChange}
+                        required
+                    />
+                    <TextField
+                        label="Senha"
+                        variant="standard"
+                        name="senha"
+                        type="password"
+                        value={senha}
                         onChange={handleChange}
                         required
                     />
