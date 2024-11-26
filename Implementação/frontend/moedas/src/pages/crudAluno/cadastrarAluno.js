@@ -50,7 +50,6 @@ const CadastrarAluno = () => {
         try {
             const response = await axios.post(`http://localhost:8080/aluno?senha=${senha}`, {
                 ...formData,
-                role: "ALUNO",
                 instituicaoEnsino: {
                     id: parseInt(formData.instituicaoEnsino)
                 }
@@ -152,7 +151,7 @@ const CadastrarAluno = () => {
                         name="senha"
                         type="password"
                         value={senha}
-                        onChange={handleChange}
+                        onChange={(e) => setSenha(e.target.value)} 
                         required
                     />
                     <Button

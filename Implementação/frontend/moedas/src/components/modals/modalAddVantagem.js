@@ -7,6 +7,7 @@ const ModalAddVantagem = ({ open, onClose, empresaId }) => {
         nome: '',
         descricao: '',
         valor: 0,
+        fotoUrl: '',
     });
 
     const handleVantagemInputChange = (e) => {
@@ -27,6 +28,7 @@ const ModalAddVantagem = ({ open, onClose, empresaId }) => {
                         'Content-Type': 'application/json',
                     },
                 }
+
             );
             alert("Vantagem cadastrada com sucesso!");
             console.log("Resposta do servidor:", response.data);
@@ -41,6 +43,9 @@ const ModalAddVantagem = ({ open, onClose, empresaId }) => {
             }
         }
     };
+
+    console.log("🚀 ~ ModalAddVantagem ~ vantagemData.fotoUrl:", vantagemData.fotoUrl)
+
     
 
     return (
@@ -71,6 +76,14 @@ const ModalAddVantagem = ({ open, onClose, empresaId }) => {
                     onChange={handleVantagemInputChange}
                     margin="dense"
                     type="number"
+                />
+                 <TextField
+                    fullWidth
+                    label="Url Foto"
+                    name="fotoUrl"
+                    value={vantagemData.fotoUrl}
+                    onChange={handleVantagemInputChange}
+                    margin="dense"
                 />
             </DialogContent>
             <DialogActions>

@@ -9,6 +9,7 @@ public record VantagemResponseDTO(Long id,
                                   String nome,
                                   String descricao,
                                   Integer valor,
+                                  String fotoUrl,
                                   EmpresaParceira empresaParceira) {
     public static VantagemResponseDTO fromEntity(Vantagem vantagem) {
         return VantagemResponseDTO.builder()
@@ -16,6 +17,7 @@ public record VantagemResponseDTO(Long id,
                 .nome(vantagem.getNome())
                 .descricao(vantagem.getDescricao())
                 .valor(vantagem.getValor())
+                .fotoUrl(vantagem.getFotoUrl())
                 .empresaParceira(vantagem.getEmpresaParceira())
                 .build();
     }

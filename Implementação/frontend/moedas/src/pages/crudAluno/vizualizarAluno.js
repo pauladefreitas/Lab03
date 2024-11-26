@@ -126,24 +126,13 @@ const VizualizarAluno = () => {
         }
     ];
 
-    const cadAluno = () => {
-        navigate('/cadastrarAluno');
-    };
-
     return (
         <div>
             <Header />
 
             <div className='listEstudante'>
                 <h1>Lista de Alunos</h1>
-                <Button
-                    onClick={cadAluno}
-                    variant="contained"
-                    sx={{ background: '#191970' }}
-                    style={{ width: '300px' }}
-                >
-                    Adicionar novo estudante
-                </Button>
+                
             </div>
 
             <hr className='divider' />

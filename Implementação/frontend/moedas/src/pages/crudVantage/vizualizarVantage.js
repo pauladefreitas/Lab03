@@ -22,19 +22,22 @@ function VizualizarVantagem() {
     <div>
       <Header />
       <div className='lojaVantagem'>
-        <StoreIcon sx={{ color: '#191970', fontSize: '45px' }}/>
+        <StoreIcon sx={{ color: '#191970', fontSize: '45px' }} />
         <h1 className='storeC'>Loja chiCOIN</h1>
       </div>
-      <hr className='hrV'/>
+      <hr className='hrV' />
       <div className='listVantagem'>
         {vantagens.map((vantagem) => (
           <CardVantagem
             key={vantagem.id}
+            id={vantagem.id}
             nome={vantagem.nome}
             descricao={vantagem.descricao}
             valor={vantagem.valor}
+            fotoUrl={vantagem.fotoUrl} 
           />
         ))}
+
       </div>
     </div>
   );

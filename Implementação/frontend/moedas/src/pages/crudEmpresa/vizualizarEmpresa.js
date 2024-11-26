@@ -104,12 +104,12 @@ const VizualizarEmpresa = () => {
         try {
             const response = await axios.get(`http://localhost:8080/vantagens/${empresaId}`);
             setVantagens(response.data);
-            setOpenViewVantagemModal(true); 
+            setOpenViewVantagemModal(true);
         } catch (error) {
             console.error('Erro ao carregar vantagens:', error);
         }
     };
-    
+
 
     const handleViewVantagensClick = (empresa) => {
         setSelectedEmpresa(empresa);
@@ -162,10 +162,6 @@ const VizualizarEmpresa = () => {
         },
     ];
 
-    const cadEmpresa = () => {
-        navigate('/cadastrarEmpresa');
-    };
-
     const handleDeleteSuccess = async () => {
         try {
             const response = await axios.get(`http://localhost:8080/vantagens/${selectedEmpresa.id}`);
@@ -180,14 +176,7 @@ const VizualizarEmpresa = () => {
             <Header />
             <div className='listEstudante'>
                 <h1>Lista Empresas Parceiras</h1>
-                <Button
-                    onClick={cadEmpresa}
-                    variant="contained"
-                    sx={{ background: '#191970' }}
-                    style={{ width: '300px' }}
-                >
-                    Adicionar nova empresa
-                </Button>
+                
             </div>
 
             <hr className='divider' />
@@ -268,11 +257,12 @@ const VizualizarEmpresa = () => {
             <ModalAddVantagem
                 open={openAddVantagemModal}
                 onClose={() => setOpenAddVantagemModal(false)}
-                empresa={selectedEmpresa}
+                empresaId={selectedEmpresa?.id} 
                 onSuccess={() => {
                     fetchVantagens(selectedEmpresa.id);
                 }}
             />
+
         </div>
     );
 };

@@ -4,7 +4,8 @@ import CadastrarAluno from './pages/crudAluno/cadastrarAluno';
 import VizualizarEmpresa from './pages/crudEmpresa/vizualizarEmpresa';
 import CadastrarEmpresa from './pages/crudEmpresa/cadastrarEmpresa';
 import VizualizarVantagem from './pages/crudVantage/vizualizarVantage';
-import Login from './pages/login/login'
+import Login from './pages/login/login';
+import DetalhesVantagem from './pages/crudVantage/detalheVantagemResgate';
 
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 
@@ -20,6 +21,7 @@ function App() {
             <Route path="/cadastrarEmpresa" element={<CadastrarEmpresa />} />
             <Route path="/vizualizarVantagem" element={<VizualizarVantagem />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/detalhesVantagem/:id" element={<DetalhesVantagem />} />
           </Routes>
         </Router>
     </div>

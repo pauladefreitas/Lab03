@@ -46,6 +46,11 @@ public class AlunoController {
         return ResponseEntity.ok(alunoService.update(id, obj));
     }
 
+    @GetMapping("/auth/{userAuthId}")
+    public ResponseEntity<Aluno> getByUserAuthId(@PathVariable Long userAuthId){
+        return ResponseEntity.ok(alunoService.getByUserAuthId(userAuthId));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         this.alunoService.delete(id);

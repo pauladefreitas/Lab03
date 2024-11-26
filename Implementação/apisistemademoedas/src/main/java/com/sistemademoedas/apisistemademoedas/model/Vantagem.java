@@ -21,6 +21,7 @@ public class Vantagem {
     private String nome;
     private String descricao;
     private Integer valor;
+    private String fotoUrl;
 
     @ManyToOne
     @JoinColumn(name = "empresa_parceira_id", nullable = false)

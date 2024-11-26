@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -8,25 +8,27 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import Logo from '../images/porco.png';
 
-const pages = ['Doar Moedas', 'Empresa', 'Aluno', 'Login', 'Vantagem'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const allPages = {
+  ALUNO: ['Aluno', 'Vantagem'],
+  EMPRESA: ['Empresa'], 
+  DEFAULT: ['Doar Moedas', 'Login'],
+};
 
 const ResponsiveAppBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElCadastro, setAnchorElCadastro] = React.useState(null);
   const navigate = useNavigate();
+
+  const role = localStorage.getItem('role') || 'DEFAULT';
+  const pages = allPages[role] || allPages.DEFAULT;
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
   };
 
   const handleCloseNavMenu = (page) => {
@@ -34,44 +36,40 @@ const ResponsiveAppBar = () => {
     if (page === 'Aluno') {
       navigate('/vizualizarAluno');
     }
-
-
     if (page === 'Doar Moedas') {
       navigate('/');
     }
-
-    if(page === 'Empresa'){
-      navigate('/vizualizarEmpresa')
+    if (page === 'Empresa') {
+      navigate('/vizualizarEmpresa');
     }
-
-    if(page === 'Login'){
+    if (page === 'Login') {
       navigate('/login');
     }
-
-    if(page === 'Vantagem'){
-      navigate('/vizualizarVantagem')
+    if (page === 'Vantagem') {
+      navigate('/vizualizarVantagem');
     }
   };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate('/login');
   };
 
   return (
     <AppBar position="static">
       <Container maxWidth="xl" sx={{ background: '#191970' }}>
         <Toolbar disableGutters>
-          <Box 
+          <Box
             component="img"
             src={Logo}
             alt="Logo"
-            sx={{ display: { xs: 'none', md: 'flex' },  width: 50, height: 50 }}
+            sx={{ display: { xs: 'none', md: 'flex' }, width: 50, height: 50 }}
           />
           <Typography
             variant="h6"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="#"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -129,7 +127,7 @@ const ResponsiveAppBar = () => {
             variant="h5"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="#"
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
@@ -154,39 +152,15 @@ const ResponsiveAppBar = () => {
               </Button>
             ))}
           </Box>
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+          {(role === 'ALUNO' || role === 'EMPRESA') && (
+            <IconButton color="inherit" onClick={handleLogout}>
+              <ExitToAppIcon />
+            </IconButton>
+          )}
         </Toolbar>
       </Container>
     </AppBar>
   );
-}
+};
 
 export default ResponsiveAppBar;

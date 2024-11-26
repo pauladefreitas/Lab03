@@ -91,9 +91,9 @@ public class AlunoService {
     }
 
     @Transactional
-    public void resgataVantagem(Long alunoId, Long vantagemId) {
-        Aluno aluno = alunoRepository.findById(alunoId)
-                .orElseThrow(() -> new NoSuchElementException("Aluno não encontrado. Id " + alunoId));
+    public void resgataVantagem(Long userAuthId, Long vantagemId) {
+        Aluno aluno = alunoRepository.findByUserAuth_Id(userAuthId)
+                .orElseThrow(() -> new NoSuchElementException("Aluno não encontrado. UserAuthId " + userAuthId));
 
         Vantagem vantagem = vantagemRepository.findById(vantagemId)
                 .orElseThrow(() -> new NoSuchElementException("Vantagem não encontrada. Id " + vantagemId));
@@ -111,4 +111,8 @@ public class AlunoService {
         gerenciadorVantagensRepository.save(gerenciadorVantagens);
     }
 
+    public Aluno getByUserAuthId(Long userAuthId) {
+        return alunoRepository.findByUserAuth_Id(userAuthId)
+                .orElseThrow(() -> new NoSuchElementException("Aluno não encontrado. UserAuthId " + userAuthId));
+    }
 }

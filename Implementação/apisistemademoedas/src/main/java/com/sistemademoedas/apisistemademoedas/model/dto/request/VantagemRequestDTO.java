@@ -6,4 +6,5 @@ import jakarta.validation.constraints.Positive;
 
 public record VantagemRequestDTO(@NotBlank String nome,
                                  @NotNull @Positive Integer valor,
-                                 @NotBlank String descricao) { }
+                                 @NotBlank String descricao,
+                                 @NotBlank String fotoUrl) { }

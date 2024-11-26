@@ -1,14 +1,37 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Moedas from '../../images/iconMoeda.png';
 
-const CardVantagem = ({ nome, descricao, valor }) => {
+const CardVantagem = ({ id, nome, descricao, valor, fotoUrl }) => {
+  const navigate = useNavigate();
+
+  const handleCardClick = () => {
+    navigate(`/detalhesVantagem/${id}`);
+  };
+
+  console.log("🚀 ~ CardVantagem ~ fotoUrl:", fotoUrl);
+
   return (
-    <Card sx={{ minWidth: 275, margin: '10px 30%' }}>
+    <Card
+      sx={{ minWidth: 275, margin: '10px 30%' }}
+      onClick={handleCardClick}
+      style={{ cursor: 'pointer' }}
+    >
       <CardContent>
+        <img
+          src={fotoUrl}
+          alt={nome}
+          style={{
+            width: '100%', 
+            height: '200px',
+            objectFit: 'cover', 
+            borderRadius: '8px',
+          }}
+        />
         <Typography variant="h5" component="div" sx={{ marginBottom: 2 }}>
           {nome}
         </Typography>
