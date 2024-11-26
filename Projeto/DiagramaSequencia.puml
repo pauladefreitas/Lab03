@@ -1,22 +1,21 @@
 @startuml
-actor "Empresa Parceira" as Empresa
-actor "Aluno" as Aluno
-participant "Cadastro de Vantagem" as Cadastro
-participant "Componente de Negócio" as Negocio
-database "Banco de Dados" as Banco
+actor "Empresa Parceira" as empresa
+actor "Aluno" as aluno
+participant "Front-end Vantagens" as frontend
+participant "Backend Vantagens" as backend
+database "Banco de Dados" as db
 
-Empresa -> Cadastro : Incluir dados vantagem()
-Cadastro -> Negocio : Verificar existência vantagem()
-Negocio -> Banco : Verificar existência vantagem no banco()
-Banco --> Negocio : Receber mensagem vantagem não encontrada()
-Negocio --> Cadastro : 
-Cadastro -> Negocio : Gravar dados vantagem()
-Negocio -> Banco : Inserir dados vantagem()
-Banco --> Negocio : 
-Negocio --> Cadastro : 
-Aluno -> Cadastro : Verificar vantagens()
-Cadastro -> Negocio : Verificar vantagens()
-Negocio -> Banco : Buscar dados vantagens()
-Banco --> Negocio : Receber dados vantagens()
-Negocio --> Cadastro : 
+empresa -> frontend: Enviar dados para cadastro
+frontend -> backend: Gravar dados da vantagem()
+backend -> db: Inserir dados da vantagem()
+db --> backend: Dados gravados com sucesso
+backend --> frontend: Confirmar sucesso do cadastro
+frontend --> empresa: Mensagem: "Vantagem cadastrada com sucesso"
+
+aluno -> frontend: Consultar vantagens()
+frontend -> backend: Solicitar dados das vantagens()
+backend -> db: Buscar dados das vantagens()
+db --> backend: Retornar dados das vantagens
+backend --> frontend: Enviar dados das vantagens
+frontend --> aluno: Exibir vantagens cadastradas
 @enduml
