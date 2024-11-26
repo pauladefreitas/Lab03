@@ -73,6 +73,13 @@ public class AlunoService {
                 .toList();
     }
 
+    public List<GerenciadorVantagensResponseDTO> getAllVantagensByAlunoId(Long id) {
+        return gerenciadorVantagensRepository.findAllByAlunoId(id)
+                .stream()
+                .map(GerenciadorVantagensResponseDTO::fromEntity)
+                .toList();
+    }
+
     public AlunoResponseDTO update(Long id, AlunoRequestDTO alunoRequestDTO) {
         var aluno = alunoRepository.findById(id)
                 .orElseThrow(() -> new AlunoNotFoundException("Aluno não encontrado. Id " + id));
