@@ -24,6 +24,7 @@ function VizualizarVantagem() {
       <div className='lojaVantagem'>
         <StoreIcon sx={{ color: '#191970', fontSize: '45px' }} />
         <h1 className='storeC'>Loja chiCOIN</h1>
+        
       </div>
       <hr className='hrV' />
       <div className='listVantagem'>

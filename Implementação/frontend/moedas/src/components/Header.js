@@ -16,7 +16,7 @@ import Logo from '../images/porco.png';
 const allPages = {
   ALUNO: ['Aluno', 'Vantagem'],
   EMPRESA: ['Empresa'], 
-  DEFAULT: ['Doar Moedas', 'Login'],
+  DEFAULT: ['Doar Moedas', 'Cadastro', 'Login'],
 };
 
 const ResponsiveAppBar = () => {
@@ -31,23 +31,26 @@ const ResponsiveAppBar = () => {
     setAnchorElNav(event.currentTarget);
   };
 
+  const handleOpenCadastroMenu = (event) => {
+    setAnchorElCadastro(event.currentTarget);
+  };
+
   const handleCloseNavMenu = (page) => {
     setAnchorElNav(null);
-    if (page === 'Aluno') {
-      navigate('/vizualizarAluno');
-    }
-    if (page === 'Doar Moedas') {
-      navigate('/');
-    }
-    if (page === 'Empresa') {
-      navigate('/vizualizarEmpresa');
-    }
-    if (page === 'Login') {
-      navigate('/login');
-    }
-    if (page === 'Vantagem') {
-      navigate('/vizualizarVantagem');
-    }
+    if (page === 'Aluno') navigate('/vizualizarAluno');
+    if (page === 'Doar Moedas') navigate('/');
+    if (page === 'Empresa') navigate('/vizualizarEmpresa');
+    if (page === 'Login') navigate('/login');
+    if (page === 'Vantagem') navigate('/vizualizarVantagem');
+  };
+
+  const handleCloseCadastroMenu = () => {
+    setAnchorElCadastro(null);
+  };
+
+  const handleNavigateCadastro = (route) => {
+    navigate(route);
+    handleCloseCadastroMenu();
   };
 
   const handleLogout = () => {
@@ -107,14 +110,23 @@ const ResponsiveAppBar = () => {
                 horizontal: 'left',
               }}
               open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
+              onClose={() => setAnchorElNav(null)}
               sx={{ display: { xs: 'block', md: 'none' } }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={() => handleCloseNavMenu(page)}>
-                  <Typography sx={{ textAlign: 'center' }}>{page}</Typography>
-                </MenuItem>
-              ))}
+              {pages.map((page) =>
+                page === 'Cadastro' ? (
+                  <MenuItem
+                    key="Cadastro"
+                    onClick={handleOpenCadastroMenu}
+                  >
+                    <Typography sx={{ textAlign: 'center' }}>Cadastro</Typography>
+                  </MenuItem>
+                ) : (
+                  <MenuItem key={page} onClick={() => handleCloseNavMenu(page)}>
+                    <Typography sx={{ textAlign: 'center' }}>{page}</Typography>
+                  </MenuItem>
+                )
+              )}
             </Menu>
           </Box>
           <Box
@@ -142,16 +154,48 @@ const ResponsiveAppBar = () => {
             LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={() => handleCloseNavMenu(page)}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Button>
-            ))}
+            {pages.map((page) =>
+              page === 'Cadastro' ? (
+                <Button
+                  key="Cadastro"
+                  onClick={handleOpenCadastroMenu}
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  Cadastro
+                </Button>
+              ) : (
+                <Button
+                  key={page}
+                  onClick={() => handleCloseNavMenu(page)}
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  {page}
+                </Button>
+              )
+            )}
           </Box>
+          <Menu
+            id="menu-cadastro"
+            anchorEl={anchorElCadastro}
+            anchorOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            open={Boolean(anchorElCadastro)}
+            onClose={handleCloseCadastroMenu}
+          >
+            <MenuItem onClick={() => handleNavigateCadastro('/cadastrarAluno')}>
+              Cadastrar Aluno
+            </MenuItem>
+            <MenuItem onClick={() => handleNavigateCadastro('/cadastrarEmpresa')}>
+              Cadastrar Empresa
+            </MenuItem>
+          </Menu>
           {(role === 'ALUNO' || role === 'EMPRESA') && (
             <IconButton color="inherit" onClick={handleLogout}>
               <ExitToAppIcon />

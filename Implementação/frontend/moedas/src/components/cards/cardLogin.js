@@ -11,7 +11,7 @@ import axios from 'axios';
 const CardLogin = () => {
     const [email, setEmail] = React.useState('');
     const [senha, setSenha] = React.useState('');
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
 
     const handleLogin = async () => {
         try {
@@ -23,14 +23,18 @@ const CardLogin = () => {
             localStorage.setItem('userId', response.data.id);
             localStorage.setItem('role', response.data.role);
 
-
-            alert('Login realizado com sucesso!');
-            navigate('/vizualizarVantagem'); 
+            if (response.data.role === 'ALUNO') {
+                navigate('/vizualizarVantagem');
+            } else {
+                alert('Login realizado com sucesso!');
+                navigate('/vizualizarVantagem');
+            }
         } catch (error) {
             console.error('Erro no login:', error.response?.data || error.message);
             alert('Erro ao fazer login. Verifique suas credenciais.');
         }
     };
+
 
     return (
         <Card sx={{ minWidth: 275, margin: '35px 30%' }}>

@@ -73,14 +73,14 @@ function DetailsVantagem() {
         setSnackbarMessage('Vantagem resgatada com sucesso!');
         setSnackbarSeverity('success');
         setOpenSnackbar(true);
-        setOpenDialog(false); // Close the confirmation dialog
+        setOpenDialog(false); 
       })
       .catch((error) => {
         console.error('Erro ao resgatar a vantagem:', error);
         setSnackbarMessage('Erro ao resgatar a vantagem.');
         setSnackbarSeverity('error');
         setOpenSnackbar(true);
-        setOpenDialog(false); // Close the confirmation dialog
+        setOpenDialog(false); 
       });
   };
 
@@ -198,7 +198,6 @@ function DetailsVantagem() {
         </Box>
       </div>
 
-      {/* Confirmation Dialog */}
       <Dialog
         open={openDialog}
         onClose={handleCloseDialog}
@@ -222,7 +221,6 @@ function DetailsVantagem() {
         </DialogActions>
       </Dialog>
 
-      {/* Snackbar for feedback messages */}
       <Snackbar
         open={openSnackbar}
         autoHideDuration={6000}
