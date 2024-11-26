@@ -19,7 +19,7 @@ public class GerenciadorVantagensController {
     @Autowired
     private AlunoService alunoService;
 
-    @GetMapping("/aluno/{aluno_id}")
+    @GetMapping("/{aluno_id}")
     public ResponseEntity<List<GerenciadorVantagensResponseDTO>> findAllVantagensByAlunoId(@PathVariable Long aluno_id) {
         return ResponseEntity.ok(alunoService.getAllVantagensByAlunoId(aluno_id));
     }
