@@ -10,7 +10,7 @@ const VerMoedasDoadas = ({ doacao }) => {
             <div className='msg'>
                 <img src={Moeda} style={{ width: '30px' }}></img>
                 <h5>
-                    {doacao.aluno.nome} recebeu <span className='qtdMoeda'>{doacao.moedas} moeda(s)</span> do professor {doacao.professor.nome}
+                    Voce recebeu <span className='qtdMoeda'>{doacao.moedas} moeda(s)</span> do professor {doacao.professor.nome}
                 </h5>
                 <p>{doacao.descricao}</p>
             </div>

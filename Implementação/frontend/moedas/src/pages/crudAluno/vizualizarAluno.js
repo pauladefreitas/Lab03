@@ -72,19 +72,6 @@ const VizualizarAluno = () => {
         console.log(`Edit student with id: ${id}`);
     };
 
-    const handleViewCoinsClick = async (userId) => {
-        setSelectedAlunoId(userId);
-        try {
-            const response = await axios.get(`http://localhost:8080/gerenciador_moedas/aluno/${userId}`, {
-            });
-            setDoacoes(response.data); 
-            setVerMoedasOpen(true);
-
-        } catch (error) {
-            console.error('Erro ao carregar doações:', error);
-        }
-    };
-
     const handleVerMoedasClose = () => {
         setVerMoedasOpen(false);
         setDoacoes([]);
@@ -117,9 +104,6 @@ const VizualizarAluno = () => {
                     </IconButton>
                     <IconButton color="secondary" onClick={() => handleDeleteClick(params.row.id)}>
                         <DeleteIcon />
-                    </IconButton>
-                    <IconButton color="secondary" onClick={() => handleViewCoinsClick(params.row.id)}>
-                        <RemoveRedEyeIcon />
                     </IconButton>
                 </>
             )

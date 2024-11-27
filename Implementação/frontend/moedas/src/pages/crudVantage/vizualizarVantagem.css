@@ -1,19 +1,36 @@
-.lojaVantagem{
-    margin-left: 25px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+.lojaVantagem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 20px;
 }
 
-.listVantagem{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+.lojaVantagemLeft {
+  display: flex;
+  align-items: center;
+  flex: 1;
 }
 
-.storeC{
-    color: #191970;
+.buttonGroup {
+  display: flex;
+  align-items: center;
 }
 
-.hrV{
-    border: 0.1px solid #ececec;
+.listVantagem {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.storeIcon {
+  color: #191970;
+  font-size: 5.5rem;
+}
+
+.storeC {
+  color: #191970;
+  font-size: 2.5rem;
+}
+
+.hrV {
+  border: 0.1px solid #ececec;
 }

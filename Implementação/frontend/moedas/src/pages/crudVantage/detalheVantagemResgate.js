@@ -154,7 +154,7 @@ function DetailsVantagem() {
                 variant="body2"
                 sx={{ color: 'green', fontWeight: 'bold' }}
               >
-                Saldo atual: {saldoMoedas} Moedas
+                Seu saldo atual: {saldoMoedas} Moedas
               </Typography>
               {hasEnoughCoins ? (
                 <Typography
