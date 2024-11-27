@@ -8,6 +8,6 @@ import java.util.List;
 public interface GerenciadorMoedasRepository extends JpaRepository<GerenciadorMoedas, Long> {
 
     List<GerenciadorMoedas> findAllByProfessorId(Long id);
-    List<GerenciadorMoedas> findAllByAlunoId(Long id);
+    List<GerenciadorMoedas> findAllByAlunoUserAuthId(Long userAUthId);
 
 }

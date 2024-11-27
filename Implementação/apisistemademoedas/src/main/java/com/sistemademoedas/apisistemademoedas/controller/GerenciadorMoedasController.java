@@ -28,8 +28,8 @@ public class GerenciadorMoedasController {
         return ResponseEntity.ok(professorService.getAllTransactionsByProfessorId(professor_id));
     }
 
-    @GetMapping("/aluno/{aluno_id}")
-    public ResponseEntity<List<GerenciadorMoedasResponseDTO>> findAllTransactionsByAlunoId(@PathVariable Long aluno_id) {
-        return ResponseEntity.ok(alunoService.getAllTransactionsByAlunoId(aluno_id));
+    @GetMapping("/aluno/{userAuthId}")
+    public ResponseEntity<List<GerenciadorMoedasResponseDTO>> findAllTransactionsByAlunoId(@PathVariable Long userAuthId) {
+        return ResponseEntity.ok(alunoService.getAllTransactionsByAlunoId(userAuthId));
     }
 }
