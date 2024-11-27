@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface GerenciadorVantagensRepository extends JpaRepository<GerenciadorVantagens, Long> {
-  List<GerenciadorVantagens> findAllByAlunoId(Long id);
+  List<GerenciadorVantagens> findAllByAlunoUserAuthId(Long id);
 }

@@ -7,6 +7,7 @@ import com.sistemademoedas.apisistemademoedas.model.Vantagem;
 import com.sistemademoedas.apisistemademoedas.model.dto.request.AlunoRequestDTO;
 import com.sistemademoedas.apisistemademoedas.model.dto.response.AlunoResponseDTO;
 import com.sistemademoedas.apisistemademoedas.model.dto.response.GerenciadorMoedasResponseDTO;
+import com.sistemademoedas.apisistemademoedas.model.dto.response.GerenciadorVantagensResponseDTO;
 import com.sistemademoedas.apisistemademoedas.model.enums.RoleEnum;
 import com.sistemademoedas.apisistemademoedas.model.security.UserAuth;
 import com.sistemademoedas.apisistemademoedas.repository.*;
@@ -66,15 +67,15 @@ public class AlunoService {
                 .toList();
     }
 
-    public List<GerenciadorMoedasResponseDTO> getAllTransactionsByAlunoId(Long id) {
-        return gerenciadorMoedasRepository.findAllByAlunoId(id)
+    public List<GerenciadorMoedasResponseDTO> getAllTransactionsByAlunoId(Long userAuthId) {
+        return gerenciadorMoedasRepository.findAllByAlunoUserAuthId(userAuthId)
                 .stream()
                 .map(GerenciadorMoedasResponseDTO::fromEntity)
                 .toList();
     }
 
-    public List<GerenciadorVantagensResponseDTO> getAllVantagensByAlunoId(Long id) {
-        return gerenciadorVantagensRepository.findAllByAlunoId(id)
+    public List<GerenciadorVantagensResponseDTO> getAllVantagensByAlunoId(Long userAuthId) {
+        return gerenciadorVantagensRepository.findAllByAlunoUserAuthId(userAuthId)
                 .stream()
                 .map(GerenciadorVantagensResponseDTO::fromEntity)
                 .toList();
