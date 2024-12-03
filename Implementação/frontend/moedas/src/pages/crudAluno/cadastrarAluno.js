@@ -9,7 +9,7 @@ const CadastrarAluno = () => {
         nome: '',
         email: '',
         endereco: '',
-        saldoMoedas: 0,
+        // saldoMoedas: 0,
         curso: '',
         rg: '',
         cpf: '',
@@ -59,7 +59,7 @@ const CadastrarAluno = () => {
                 nome: '',
                 email: '',
                 endereco: '',
-                saldoMoedas: 0,
+                // saldoMoedas: 0,
                 curso: '',
                 rg: '',
                 cpf: '',
@@ -103,7 +103,7 @@ const CadastrarAluno = () => {
                         onChange={handleChange}
                         required
                     />
-                    <TextField
+                    {/* <TextField
                         label="Saldo em Moedas"
                         variant="standard"
                         name="saldoMoedas"
@@ -111,7 +111,7 @@ const CadastrarAluno = () => {
                         value={formData.saldoMoedas}
                         onChange={handleChange}
                         required
-                    />
+                    /> */}
                     <TextField
                         label="Curso"
                         variant="standard"

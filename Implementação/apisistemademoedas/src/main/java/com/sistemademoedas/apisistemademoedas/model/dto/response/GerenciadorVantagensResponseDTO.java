@@ -6,11 +6,12 @@ import lombok.Builder;
 
 @Builder
 public record GerenciadorVantagensResponseDTO(Long id,
+                                              Integer valor,
                                               String descricao) {
 
     public static GerenciadorVantagensResponseDTO fromEntity(GerenciadorVantagens gerenciadorVantagens) {
         return GerenciadorVantagensResponseDTO.builder()
-                .id(gerenciadorVantagens.getId())
+                .valor(gerenciadorVantagens.getVantagem().getValor())
                 .descricao(gerenciadorVantagens.getVantagem().getDescricao())
                 .build();
     }

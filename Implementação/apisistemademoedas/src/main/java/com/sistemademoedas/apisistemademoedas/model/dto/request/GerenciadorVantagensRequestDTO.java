@@ -4,5 +4,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record GerenciadorVantagensRequestDTO(@NotNull Long vantagemId,
+                                             @NotNull Integer valor,
                                              @NotBlank String descricao) {
 }

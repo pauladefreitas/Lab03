@@ -82,7 +82,7 @@ public class AlunoService {
     }
 
     public AlunoResponseDTO update(Long id, AlunoRequestDTO alunoRequestDTO) {
-        var aluno = alunoRepository.findById(id)
+        var aluno = alunoRepository.findByUserAuthId(id)
                 .orElseThrow(() -> new AlunoNotFoundException("Aluno não encontrado. Id " + id));
         aluno.update(alunoRequestDTO);
         alunoRepository.save(aluno);
@@ -90,7 +90,7 @@ public class AlunoService {
     }
 
     public void delete(Long id) {
-        alunoRepository.findById(id);
+        alunoRepository.findByUserAuthId(id);
         try {
             alunoRepository.deleteById(id);
         } catch (Exception e) {

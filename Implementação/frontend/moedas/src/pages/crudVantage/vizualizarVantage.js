@@ -5,7 +5,7 @@ import './vizualizarVantagem.css';
 import StoreIcon from '@mui/icons-material/Store';
 import RedeemIcon from '@mui/icons-material/Redeem';
 import axios from 'axios';
-import { Button, Modal, Box, Typography } from '@mui/material';
+import { Button, Modal, Box, Typography, Divider } from '@mui/material';
 import VerMoedasDoadas from '../../components/cards/verMoedasDoadas';
 
 function VizualizarVantagem() {
@@ -134,10 +134,11 @@ function VizualizarVantagem() {
         <Box sx={modalStyle}>
           <h2 id='modal-title'>Meus Resgates</h2>
           {resgates.length > 0 ? (
-            resgates.map((resgate) => (
+            resgates.map((resgate, index) => (
               <div key={resgate.id}>
-                <p>ID: {resgate.id}</p>
+                <p><strong>- {resgate.valor} moedas</strong></p>
                 <p>Descrição: {resgate.descricao}</p>
+                {index < resgates.length - 1 && <Divider sx={{ my: 2 }} />} 
               </div>
             ))
           ) : (

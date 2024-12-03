@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface AlunoRepository extends JpaRepository<Aluno,Long> {
 
     Optional<Aluno> findByUserAuth_Id(Long userAuthId);
+
+    Optional<Aluno> findByUserAuthId(Long id);
 }
